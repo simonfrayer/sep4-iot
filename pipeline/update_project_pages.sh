@@ -8,8 +8,8 @@ if [ ! $# -eq 1 ]; then
 fi
 
 REPOSITORY=${1,,}
-REPO_OWNER=$(echo ${REPO_NAME}|cut -f1 -d/)
-REPO_NAME=$(echo ${REPO_NAME}|cut -f2 -d/)
+REPO_OWNER=$(echo ${REPOSITORY}|cut -f1 -d/)
+REPO_NAME=$(echo ${REPOSITORY}|cut -f2 -d/)
 PAGES_URL="https://${REPO_OWNER}.github.io/${REPO_NAME}/"
 
 if [ ! $(grep ${PAGES_URL} README.md ]; then
