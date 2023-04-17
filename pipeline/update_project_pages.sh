@@ -7,6 +7,7 @@ if [ ! $# -eq 1 ]; then
     exit 1
 fi
 
+REPORAW="${1}"
 REPOSITORY=$(echo "${1}" | tr  '[:upper:]' '[:lower:]' )
 REPO_OWNER=$(echo "${REPOSITORY}" | cut -f1 -d/ )
 REPO_NAME=$(echo "${REPOSITORY}" | cut -f2 -d/ )
@@ -35,7 +36,7 @@ cp -f test_result.xml proj_pages/testdata/test_result.xml
 # Update date stamps
 NOW=$(date)
 sed "s/TTTTTTTTTTTTTT/${NOW}/g" < proj_pages/index.html.template > index_tmp.html
-sed "s/RRRRRRRRRRRRRR/${REPOSITORY}/g" < index_tmp.html > index.html
+sed "s:RRRRRRRRRRRRRR:${REPORAW}:g" < index_tmp.html > index.html
 mv -f index.html proj_pages/index.html
 
 exit 0
