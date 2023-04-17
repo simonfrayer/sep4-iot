@@ -1,18 +1,26 @@
 #! /bin/sh
 set -e
 
-if [ ! $# -eq 1 ]; then
-    echo "Called with the a wrong number of arguments, expected 1 got $#"
+if [ ! $# -eq 2 ]; then
+    echo "Called with the a wrong number of arguments, expected 2 got $#"
     echo "$@"
     exit 1
 fi
 
-REPOSITORY=${1,,}
-REPO_OWNER=$(echo ${REPOSITORY}|cut -f1 -d/)
-REPO_NAME=$(echo ${REPOSITORY}|cut -f2 -d/)
+REPOSITORY=$(echo "${1}" | tr  '[:upper:]' '[:lower:]' )
+WORKSPACE=$(echo "${2}" | tr  '[:upper:]' '[:lower:]' )
+REPO_OWNER=$(echo "${REPOSITORY}" | cut -f1 -d/ )
+REPO_NAME=$(echo "${REPOSITORY}" | cut -f2 -d/ )
 PAGES_URL="https://${REPO_OWNER}.github.io/${REPO_NAME}/"
 
-if [ ! $(grep ${PAGES_URL} README.md ]; then
+echo "Update project pages variables"
+echo "REPOSITORY = ${REPOSITORY}"
+echo "WORKSPACE = ${WORKSPACE}"
+echo "REPO_OWNER = ${REPO_OWNER}"
+echo "REPO_NAME = ${REPO_NAME}"
+echo "PAGES_URL = ${PAGES_URL}"
+
+if [ ! $(grep -q "${PAGES_URL}" "${WORKSPACE}/README.md") ]; then
     echo "Error: The url/link that should point to the GitHub pages for the repository"
     echo "should be set to ${PAGES_URL} but is set to something else. Fix the link and"
     echo "try again."

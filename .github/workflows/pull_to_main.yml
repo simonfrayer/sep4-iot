@@ -58,7 +58,7 @@ jobs:
           docker run --rm \
             --mount type=bind,src=${{ github.workspace }},dst=/workspaces \
             --mount type=bind,src=$HOME,dst=/root \
-            ${IMAGE_NAME} sh -c "cd /workspaces;./pipeline/update_project_pages.sh ${GITHUB_REPOSITORY}"
+            ${IMAGE_NAME} sh -c "cd /workspaces;./pipeline/update_project_pages.sh ${GITHUB_REPOSITORY} ${GITHUB_WORKSPACE}"
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
