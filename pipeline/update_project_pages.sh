@@ -20,6 +20,7 @@ echo "WORKSPACE = ${WORKSPACE}"
 echo "REPO_OWNER = ${REPO_OWNER}"
 echo "REPO_NAME = ${REPO_NAME}"
 echo "PAGES_URL = ${PAGES_URL}"
+ls -al
 
 if [ ! $(grep -q "${PAGES_URL}" /workspaces/iot-base/README.md) ]; then
     echo "*** Error: The url/link that should point to the GitHub pages for"
