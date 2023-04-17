@@ -20,10 +20,10 @@ echo "REPO_NAME = ${REPO_NAME}"
 echo "PAGES_URL = ${PAGES_URL}"
 
 
-if [ ! $(grep -q "${PAGES_URL}" README.md) ]; then
+if [ ! grep -q "${PAGES_URL}" README.md ]; then
     echo "*** Error: The url/link that should point to the GitHub pages for"
     echo "***        the repository should be set to ${PAGES_URL} but is set to"
-    echo "***        something else. Fix the link and try again."
+    echo "***        something else. Fix the link in README.md and try again."
     exit 1
 fi
 
