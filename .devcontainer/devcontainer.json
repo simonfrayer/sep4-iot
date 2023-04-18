@@ -20,6 +20,7 @@
     	"vscode": {
       		"extensions": [
 				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cpptools-themes",
 				"yzhang.markdown-all-in-one",
 				"redhat.vscode-yaml",
 				"donjayamanne.githistory",
