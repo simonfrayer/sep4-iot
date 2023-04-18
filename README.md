@@ -4,6 +4,25 @@ This project shows how a development environment for the IotT target (with the A
 
 Click here to get to the [**project pages w. downloads and test results**](https://dafessor.github.io/iot-base/).
 
+# Forking this project
+When/if you fork this project, you need to address the issues below in your own forked copy.
+
+## In project settings
+* You must enable Pages using *GitHub Actions* as source.
+* You must set Actions permissions to *Allow all actions and reusable workflows*.
+* You must add a branch protection rule for the *main* branch so that a pull request is required before merging.
+
+## In the repository files
+* In **README.md** (this file) you must change the link to *"project pages w. downloads and test results"* to point to your own project's Pages. The link is at the top of the file in the second paragraph.
+
+If you don't do that, you will see this error in the pull request workflow (*Check all builds and tests*) in the *Update download files and timestamps* step:
+```
+ *** Error: The url/link that should point to the GitHub pages for
+ ***        the repository should be set to ${PAGES_URL} but is set to
+ ***        something else. Fix the link in README.md and try again.
+```
+The `${PAGES_URL}` part will show the actual URL you should put in.
+
 # How to use this project/setup
 
 ## Prerequisites
@@ -42,8 +61,8 @@ Make sure that Docker Desktop is running.
 10. `>>>` VSCode now changes into what's known as a multi-root workspace setup. This means we can work with multiple, independent sub-projects open under the umbrella of a single top-level root folder. In our actual setup there are 3 sub-projects:
 
     * **Project Root** - this is the top folder. It's not really a buildable project, but it's here to provide easy access to the important files in the top folder.
-    * **Target** - this is where all the stuff that's built for the target IoT device resides. Inside here there's a CMake managed cross-compile setup that allows us to build code that will run on the Atmega2560. The resulting binaries can obviously not run on our laptops, but once they are built automatically on GitHub, they can be downloaded from there. You can also fiddle about with the firmware files here once they are built by the cross-compiler toolchain.
-    * **Test** - this is a project setup with Google test so that files (presumably fetched from the Target project somewhere - don't copy files from target, just create symbolic links to the files that should be tested) can be built and tested locally at our own laptops. All defined tests will also be automatically built on GitHub.
+    * **Target** - this is where all the stuff that's built for the target IoT device resides. Inside here there's a CMake managed cross-compile setup that allows us to build code that will run on the Atmega2560. The resulting binaries can obviously not run on our laptops, but once they are built automatically on GitHub, they can be downloaded from there. You can also fiddle about with the firmware files here, inside the container, once they are built by the cross-compiler toolchain. You can download any file inside the container to a Windows folder, by right-clicking the file in the project explorer and choose *Download ...*
+    * **Test** - this is a project setup with Google test so that tests can be built and run locally at your own laptop. All defined tests will also be automatically built and run on GitHub.
 
 ## Final cmake config/initialization
 11. We're now in multi-root mode and there's a CMake icon on the left. Click it, and here we can now see the projects as cmake sees them.
@@ -82,7 +101,7 @@ You can start a debug session on the test code, but first you have to open a ter
 
 `apk add gdb`
 
-to install the debugger. The debugger is not part of the default devcontainer image because installing it takes up a lot of space (~500Mb). But it only takes a few seconds to install it it you need it.
+to install the debugger. The debugger is not part of the default devcontainer image because installing it takes up a lot of space (~500Mb). But it only takes a few seconds to install it if you need it.
 
 ## Starting and stopping work
 Cloning your repository to a container volume may seem odd at first. It means that everything is inside the volume, and you can't browse or fiddle with the files in a local Window repository. But then why would you, you can always (re-) start the development container which automatically mounts the volume. By using VSCode as your sole window into the project we gain some advantages, and you can do all you need with the project inside VSCode anyway.
