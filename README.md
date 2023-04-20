@@ -13,7 +13,7 @@ When/if you fork this project, you need to address the issues below in your own 
 * You must add a branch protection rule for the *main* branch so that a pull request is required before merging.
 
 ## In the repository files
-* In **README.md** (this file) you must change the link to *"project pages w. downloads and test results"* to point to your own project's Pages. The link is at the top of the file in the second paragraph.
+* In **README.md** (this file) you must change the link to **"project pages w. downloads and test results"** to point to your own project's Pages. The link is at the top of this file in the second paragraph.
 
 If you don't do that, you will see this error in the pull request workflow (*Check all builds and tests*) in the *Update download files and timestamps* step:
 ```
@@ -83,7 +83,7 @@ In addition to building code via the "cmake view", we can use the small buttons/
 * Choose which configuration to build (release, debug etc.)
 * Choose which toolchain to use for builds (GCC_12.2.0-avr or "normal" gcc=GCC_12.2.1-x86_64-alpine-linux-musl) - but tests should be built with normal gcc and target with avr.
 * Choose which build target to actually build, but just use "all" that'll work.
-* Run our code (that only works for tests) by clicking on the "play-button". That's one way to all our tests.
+* Run our code (that only works for tests) by clicking on the "play-button". That's one way to run our tests.
 * We can also run our tests by clicking on the "tickmark"-icon.
 
 You can at all times press F7, that will build your currently selected project.
@@ -101,10 +101,10 @@ You can start a debug session on the test code, but first you have to open a ter
 
 `apk add gdb`
 
-to install the debugger. The debugger is not part of the default devcontainer image because installing it takes up a lot of space (~500Mb). But it only takes a few seconds to install it if you need it.
+to install the debugger. The debugger is not part of the default devcontainer image because installing it pulls in a lot of packages that take up a lot of space (~500Mb). But it only takes a few seconds to install it if you need it.
 
 ## Starting and stopping work
-Cloning your repository to a container volume may seem odd at first. It means that everything is inside the volume, and you can't browse or fiddle with the files in a local Window repository. But then why would you, you can always (re-) start the development container which automatically mounts the volume. By using VSCode as your sole window into the project we gain some advantages, and you can do all you need with the project inside VSCode anyway.
+Cloning your repository to a container volume may seem odd at first. It means that everything is inside the volume, and you can't browse or fiddle with the files in a local Window repository. But then why would you, you can always (re-) start the development container which automatically mounts the volume. By using VSCode as your sole "window" or access point into the project we gain some advantages, and you can do all you need project-wise inside VSCode anyway.
 
 Just close the project using *File/Close Remote/Connection* when you want to put the project aside. When you want to work on the project again, just use the VSCode *File/Open Recent* menu to re-open the development container (it shows up as something like `/workspaces/iot-base/.vscode/iot-demo (Workspace)[Dev Container:C++]`), and carry on from where you left.
 

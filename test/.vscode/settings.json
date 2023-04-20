@@ -1,7 +1,7 @@
 {    
     "cmake.configureSettings" : {
         "CMAKE_VERBOSE_MAKEFILE" : "ON",
-    "ctest-lab.buildDirectory" : "${sourceDirectory}/build",
-    "cmake.buildDirectory" : "${sourceDirectory}/build"
+        "ctest-lab.buildDirectory" : "${sourceDirectory}/build",
+        "cmake.buildDirectory" : "${sourceDirectory}/build"
     }
 }
