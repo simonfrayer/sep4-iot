@@ -2,7 +2,7 @@
 
 This project shows how a development environment for the IotT target (with the ATMega2560 processor) can be setup to run inside a development container. You can build directly uploadable firmware inside the container.
 
-Click here to get to the [**project pages w. downloads and test results**](https://dafessor.github.io/iot-base/).
+Click here to get to the [**project pages w. downloads and test results**](https://simonfrayer.github.io/sep4-iot/).
 
 # Forking this project
 When/if you fork this project, you need to address the issues below in your own forked copy.
