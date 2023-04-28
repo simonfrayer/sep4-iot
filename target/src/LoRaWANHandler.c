@@ -12,6 +12,8 @@
 #include <lora_driver.h>
 #include <status_leds.h>
 
+#include "./src/headers/dataHandler.h"
+
 // Parameters for OTAA join - You have got these in a mail from IHA
 #define LORA_appEUI "05ABE2835032EC3E"
 #define LORA_appKEY "B90973872CFD40F5E380185AD43FC18C"
@@ -130,14 +132,16 @@ void lora_handler_task( void *pvParameters )
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
 
 		// Some dummy payload
+		int16_t temp = dataHandler_getData(); // The REAL temp
 		uint16_t hum = 5432; // Dummy humidity
-		int16_t temp = 123; // Dummy temp
 		uint16_t co2_ppm = 40; // Dummy CO2
+		
+		printf("Real temperature in LoRaWAN Handler: %d\n", temp);
 
-		_uplink_payload.bytes[0] = hum >> 8;
-		_uplink_payload.bytes[1] = hum & 0xFF;
-		_uplink_payload.bytes[2] = temp >> 8;
-		_uplink_payload.bytes[3] = temp & 0xFF;
+		_uplink_payload.bytes[0] = temp >> 8;
+		_uplink_payload.bytes[1] = temp & 0xFF;
+		_uplink_payload.bytes[2] = hum >> 8;
+		_uplink_payload.bytes[3] = hum & 0xFF;
 		_uplink_payload.bytes[4] = co2_ppm >> 8;
 		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
 

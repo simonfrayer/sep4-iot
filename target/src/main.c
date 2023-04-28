@@ -20,7 +20,8 @@
 #include <lora_driver.h>
 #include <status_leds.h>
 
-#include "./headers/temperature.h"
+#include "./src/headers/sensorsHandler.h"
+#include "./src/headers/temperature.h"
 
 // define semaphore handle
 SemaphoreHandle_t xTestSemaphore;
@@ -44,8 +45,8 @@ void create_tasks_and_semaphores(void)
 	}
 	
 	xTaskCreate(
-	temperature_task
-	,  "temperatureTask"  // A name just for humans
+	sensorsHandler_task
+	,  "sensorHandlerTask"  // A name just for humans
 	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
 	,  NULL
 	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
@@ -62,7 +63,7 @@ void initialiseSystem()
 	stdio_initialise(ser_USART0);
 	
 	//initialize temperature sensor
-	temperature_create(); 
+	sensorsHandler_createTemperatureSensor(); 
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();
