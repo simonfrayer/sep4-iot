@@ -9,7 +9,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "../headers/temperature.h"
-#include "../../drivers/hih8120.h"
+// #include "../../drivers/include/hih8120.h"
+#include <hih8120.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 
