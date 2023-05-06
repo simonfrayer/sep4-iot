@@ -20,8 +20,8 @@
 #include <lora_driver.h>
 #include <status_leds.h>
 
-#include "./src/headers/sensorsHandler.h"
-#include "./src/headers/temperature.h"
+#include "./headers/sensorsHandler.h"
+#include "./headers/temperature.h"
 
 // define semaphore handle
 SemaphoreHandle_t xTestSemaphore;

@@ -12,7 +12,7 @@
 #include <lora_driver.h>
 #include <status_leds.h>
 
-#include "./src/headers/dataHandler.h"
+#include "./headers/dataHandler.h"
 
 // Parameters for OTAA join - You have got these in a mail from IHA
 #define LORA_appEUI "05ABE2835032EC3E"
