@@ -1,0 +1,20 @@
+name: Push Prevention
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  push-prevention:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "dev" ]; then
+            echo "Direct push to main and dev branches is not allowed. Create a pull request instead"
+            exit 1
+          fi
