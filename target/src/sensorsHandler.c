@@ -1,29 +1,23 @@
-/*
- * sensorsHandler.c
- *
- * Created: 28-04-2023 14:17:53
- *  Author: sma
- */ 
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 #include "./include/sensorsHandler.h"
-#include "./include/temperature.h"
+#include "./include/temperatureHumidity.h"
 #include "./include/dataHandler.h"
 
 
-
 static int16_t temperatureMedian;
+static int16_t humidityMedian;
 
-void sensorsHandler_createTemperatureSensor()
+void sensorsHandler_createSensors()
 {
-	temperature_create();
+	temperatureHumidity_create();
 	
 	xTaskCreate(
-	temperature_task
-	,  "temperatureTask"  // A name just for humans
+	temperatureHumidity_task
+	,  "temperatureHumidityTask"  // A name just for humans
 	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
 	,  NULL
 	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
@@ -44,7 +38,9 @@ void sensorsHandler_task(void* pvParameters)
 		printf("SensorHandler Task Started\n");
 		xTaskDelayUntil(&xLastWakeTime, xFrequency);
 		
-		temperatureMedian = temperature_getTemperature();
+		temperatureMedian = temperatureHumidity_getTemperatureMedian();
+		humidityMedian = temperatureHumidity_getHumidityMedian();
 		dataHandler_setTemperature(temperatureMedian);
+		dataHandler_setHumidity(humidityMedian);
 	}
 }

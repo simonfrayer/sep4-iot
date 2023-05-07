@@ -1,9 +1,3 @@
-/*
-* loraWANHandler.c
-*
-* Created: 12/04/2019 10:09:05
-*  Author: IHA
-*/
 #include <stddef.h>
 #include <stdio.h>
 
@@ -14,7 +8,7 @@
 
 #include "./include/dataHandler.h"
 
-// Parameters for OTAA join - You have got these in a mail from IHA
+// Parameters for OTAA join
 #define LORA_appEUI "05ABE2835032EC3E"
 #define LORA_appKEY "B90973872CFD40F5E380185AD43FC18C"
 
@@ -130,13 +124,15 @@ void lora_handler_task( void *pvParameters )
 	for(;;)
 	{
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
+		
+		struct MeasuredData measuredData = dataHandler_getData();
 
-		// Some dummy payload
-		int16_t temp = dataHandler_getData(); // The REAL temp
-		uint16_t hum = 5432; // Dummy humidity
+		int16_t temp = measuredData.temperature; // The REAL temp
+		uint16_t hum = measuredData.humidity; // The REAL humidity
 		uint16_t co2_ppm = 40; // Dummy CO2
 		
 		printf("Real temperature in LoRaWAN Handler: %d\n", temp);
+		printf("Real humidity in LoRaWAN Handler: %d\n", hum);
 
 		_uplink_payload.bytes[0] = temp >> 8;
 		_uplink_payload.bytes[1] = temp & 0xFF;
