@@ -7,10 +7,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "../headers/temperature.h"
-#include "../../drivers/hih8120.h"
-#include "ATMEGA_FreeRTOS.h"
-#include "task.h"
+#include <stdio.h>
+#include "./include/temperature.h"
+#include <hih8120.h>
+#include <ATMEGA_FreeRTOS.h>
+#include <task.h>
+
 
 static int16_t temperatures[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
 static int indexOfLatestTemperature = 0;
@@ -60,14 +62,66 @@ int16_t temperature_getLatestTemperature(){
 		indexOfLatestTemperature = 0;
 }
 
-double temperature_getTemperature(){
-	return 2.0;
+// compare method for the quicksort
+int16_t compare(const void *a, const void *b)
+{
+	return (*(int16_t *)a - *(int16_t *)b);
 }
 
-void temperature_stopTask(){
-	//to implement
-}
+// so this is O(n log n)
+// it could be liner with the use of a heap
+int16_t temperature_getTemperature()
+{
+	printf("Getting median\n");
 
+	// make a copy of temperatures
+	int16_t temperaturesCopy[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
+
+	memcpy(temperaturesCopy, temperatures, 10 * sizeof(int16_t));
+
+	// sort the array
+	qsort(temperaturesCopy, 10, sizeof(int16_t), compare);
+
+	// print the sorted array
+	for (int i = 0; i < 10; i++)
+	{
+		printf("%d, ", temperaturesCopy[i]);
+	}
+	printf("\n");
+
+	// calculate the amount of elements that are outside of the range
+	// they represent some sort of error / initial value
+	int amountOfErrors = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		if (temperaturesCopy[i] < -400)
+		{
+			amountOfErrors++;
+		}
+	}
+
+	printf("Amount of errors: %d\n", amountOfErrors);
+
+	// get the median
+	if (amountOfErrors == 10)
+	{
+		// if all the elements are errors
+		// return the initial value
+		return -666;
+	}
+
+	// if odd number of errors
+	// return the middle element
+	if (amountOfErrors % 2 == 1)
+	{
+		return temperaturesCopy[(10 + amountOfErrors - 1) / 2];
+	}
+
+	// if even number of errors
+	// return the average of the two middle elements
+	printf("The two middle elements are: %d and %d\n", temperaturesCopy[(10 + amountOfErrors) / 2 - 1], temperaturesCopy[(10 + amountOfErrors) / 2]);
+	return (temperaturesCopy[(10 + amountOfErrors) / 2 - 1] + temperaturesCopy[(10 + amountOfErrors) / 2]) / 2;
+}
 
 void temperature_task(void* pvParameters){
 	// Remove compiler warnings
@@ -82,6 +136,8 @@ void temperature_task(void* pvParameters){
 	//loop
 	for (;;)
 	{
+		printf("Temperature Task started\n");
+		
 		isProblem = false;
 		
 		//wakeup the sensor

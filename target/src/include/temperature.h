@@ -6,8 +6,9 @@
  */ 
 
 #pragma once
-#include <stdbool.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 void temperature_create();
-double temperature_getTemperature(); 
+int16_t temperature_getTemperature(); 
 void temperature_task();
