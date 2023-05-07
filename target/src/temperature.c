@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "../include/temperature.h"
+#include "./include/temperature.h"
 #include <hih8120.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>

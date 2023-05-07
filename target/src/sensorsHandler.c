@@ -9,9 +9,9 @@
 #include <stdio.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
-#include "../include/sensorsHandler.h"
-#include "../include/temperature.h"
-#include "../include/dataHandler.h"
+#include "./include/sensorsHandler.h"
+#include "./include/temperature.h"
+#include "./include/dataHandler.h"
 
 
 
