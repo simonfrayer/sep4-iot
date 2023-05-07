@@ -19,7 +19,8 @@
 			"target/": true
 		},
 		"files.associations": {
-			"temperature.h": "c"
+			"temperature.h": "c",
+			"sensorshandler.h": "c"
 		}
 	}
 }
