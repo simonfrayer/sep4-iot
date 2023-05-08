@@ -129,7 +129,7 @@ void lora_handler_task( void *pvParameters )
 
 		int16_t temp = measuredData.temperature; // The REAL temp
 		uint16_t hum = measuredData.humidity; // The REAL humidity
-		uint16_t co2_ppm = 40; // Dummy CO2
+		uint16_t co2_ppm = measuredData.co2; // The REAL CO2
 		
 		printf("Real temperature in LoRaWAN Handler: %d\n", temp);
 		printf("Real humidity in LoRaWAN Handler: %d\n", hum);

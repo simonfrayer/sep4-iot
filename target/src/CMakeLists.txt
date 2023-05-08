@@ -5,4 +5,5 @@ target_sources(
     dataHandler.c
     sensorsHandler.c
     temperatureHumidity.c
+    co2.c
 )

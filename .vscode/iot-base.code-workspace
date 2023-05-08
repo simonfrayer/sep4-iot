@@ -20,7 +20,12 @@
 		},
 		"files.associations": {
 			"temperature.h": "c",
-			"sensorshandler.h": "c"
+			"sensorshandler.h": "c",
+			"functional": "c",
+			"compare": "c",
+			"chrono": "c",
+			"variant": "c",
+			"stdbool.h": "c"
 		}
 	}
 }
