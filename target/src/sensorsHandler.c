@@ -59,6 +59,6 @@ void sensorsHandler_task(void* pvParameters)
 
 		dataHandler_setTemperature(temperatureMedian);
 		dataHandler_setHumidity(humidityMedian);
-		//dataHandler_setCO2(co2Median);
+		dataHandler_setCO2(co2Median);
 	}
 }
