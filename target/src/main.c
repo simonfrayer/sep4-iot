@@ -21,7 +21,7 @@
 #include <status_leds.h>
 
 #include "./include/sensorsHandler.h"
-#include "./include/temperature.h"
+#include "./include/temperatureHumidity.h"
 
 // define semaphore handle
 SemaphoreHandle_t xTestSemaphore;
@@ -63,7 +63,7 @@ void initialiseSystem()
 	stdio_initialise(ser_USART0);
 	
 	//initialize temperature sensor
-	sensorsHandler_createTemperatureSensor(); 
+	sensorsHandler_createSensors(); 
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();

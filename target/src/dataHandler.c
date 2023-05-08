@@ -1,23 +1,23 @@
-/*
- * dataHandler.c
- *
- * Created: 28-04-2023 15:34:44
- *  Author: sma
- */ 
 #include <stdio.h>
 #include <stdint.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <semphr.h>
 
-static int16_t dataHandlerTemperature;
+#include "./include/dataHandler.h"
+
+static struct MeasuredData measuredData;
 
 //Mutex init
 //SemaphoreHandle_t dataHandlerMutex = xSemaphoreCreateMutex();
 
-int16_t dataHandler_getData(){
-	return dataHandlerTemperature;
+struct MeasuredData dataHandler_getData(){
+	return measuredData;
 }
 
 void dataHandler_setTemperature(int16_t sensorTemperature){
-	dataHandlerTemperature = sensorTemperature;
+	measuredData.temperature = sensorTemperature;
+}
+
+void dataHandler_setHumidity(int16_t sensorHumidity) {
+	measuredData.humidity = sensorHumidity;
 }
