@@ -1,14 +1,8 @@
-/*
- * temperatureImpl.c
- *
- * Created: 24-04-2023 13:49:58
- *  Author: sma
- */ 
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "./include/temperature.h"
+#include "./include/temperatureHumidity.h"
 #include <hih8120.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
@@ -16,9 +10,11 @@
 
 static int16_t temperatures[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
 static int indexOfLatestTemperature = 0;
+static int16_t humidities[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
+static int indexOfLatestHumidity = 0;
 static bool isProblem = false;
 
-void temperature_create(){
+void temperatureHumidity_create(){
 	hih8120_driverReturnCode_t result = hih8120_initialise();
 	if(result != HIH8120_OK){
 		printf("Initialization of hih8120 failed!\n");
@@ -28,7 +24,7 @@ void temperature_create(){
 	}
 }
 
-void temperature_wakeup(){
+static void temperatureHumidity_wakeup(){
 	hih8120_driverReturnCode_t result = hih8120_wakeup();
 	
 	if (result != HIH8120_OK)
@@ -41,7 +37,7 @@ void temperature_wakeup(){
 	}
 }
 
-void temperature_measure(){
+static void temperatureHumidity_measure(){
 	hih8120_driverReturnCode_t result = hih8120_measure();
 	
 	if (result != HIH8120_OK)
@@ -54,7 +50,7 @@ void temperature_measure(){
 	}
 }
 
-int16_t temperature_getLatestTemperature(){
+static void temperatureHumidity_getLatestTemperature(){
 	int16_t measuredTemperature =  hih8120_getTemperature_x10();
 	printf("Latest temperature: %d\n", measuredTemperature);
 	temperatures[indexOfLatestTemperature++] = measuredTemperature;
@@ -62,30 +58,39 @@ int16_t temperature_getLatestTemperature(){
 		indexOfLatestTemperature = 0;
 }
 
+static void temperatureHumidity_getLatestHumidity() {
+	int16_t measuredHumidity = (int16_t) hih8120_getHumidityPercent_x10();
+	printf("Latest humidity: %d\n", measuredHumidity);
+	humidities[indexOfLatestHumidity++] = measuredHumidity;
+	if (indexOfLatestHumidity == 10)
+		indexOfLatestHumidity = 0;
+}
+
 // compare method for the quicksort
-int16_t compare(const void *a, const void *b)
+static int16_t temperatureHumidity_compare(const void *a, const void *b)
 {
 	return (*(int16_t *)a - *(int16_t *)b);
 }
 
 // so this is O(n log n)
 // it could be liner with the use of a heap
-int16_t temperature_getTemperature()
+//true for temperature, false for humidity
+static int16_t temperatureHumidity_calculateMedian(bool isTemperature)
 {
-	printf("Getting median\n");
+	printf("Getting median %s\n", isTemperature ? "temperature" : "humidity");
 
 	// make a copy of temperatures
-	int16_t temperaturesCopy[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
+	int16_t dataCopy[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
 
-	memcpy(temperaturesCopy, temperatures, 10 * sizeof(int16_t));
+	memcpy(dataCopy, isTemperature ? temperatures : humidities, 10 * sizeof(int16_t));
 
 	// sort the array
-	qsort(temperaturesCopy, 10, sizeof(int16_t), compare);
+	qsort(dataCopy, 10, sizeof(int16_t), temperatureHumidity_compare);
 
 	// print the sorted array
 	for (int i = 0; i < 10; i++)
 	{
-		printf("%d, ", temperaturesCopy[i]);
+		printf("%d, ", dataCopy[i]);
 	}
 	printf("\n");
 
@@ -94,7 +99,7 @@ int16_t temperature_getTemperature()
 	int amountOfErrors = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		if (temperaturesCopy[i] < -400)
+		if (dataCopy[i] < -400)
 		{
 			amountOfErrors++;
 		}
@@ -114,16 +119,24 @@ int16_t temperature_getTemperature()
 	// return the middle element
 	if (amountOfErrors % 2 == 1)
 	{
-		return temperaturesCopy[(10 + amountOfErrors - 1) / 2];
+		return dataCopy[(10 + amountOfErrors - 1) / 2];
 	}
 
 	// if even number of errors
 	// return the average of the two middle elements
-	printf("The two middle elements are: %d and %d\n", temperaturesCopy[(10 + amountOfErrors) / 2 - 1], temperaturesCopy[(10 + amountOfErrors) / 2]);
-	return (temperaturesCopy[(10 + amountOfErrors) / 2 - 1] + temperaturesCopy[(10 + amountOfErrors) / 2]) / 2;
+	printf("The two middle elements are: %d and %d\n", dataCopy[(10 + amountOfErrors) / 2 - 1], dataCopy[(10 + amountOfErrors) / 2]);
+	return (dataCopy[(10 + amountOfErrors) / 2 - 1] + dataCopy[(10 + amountOfErrors) / 2]) / 2;
 }
 
-void temperature_task(void* pvParameters){
+int16_t temperatureHumidity_getTemperatureMedian() {
+	return temperatureHumidity_calculateMedian(true);
+}
+
+int16_t temperatureHumidity_getHumidityMedian() {
+	return temperatureHumidity_calculateMedian(false);
+}
+
+void temperatureHumidity_task(void* pvParameters){
 	// Remove compiler warnings
 	(void)pvParameters;
 	
@@ -141,21 +154,22 @@ void temperature_task(void* pvParameters){
 		isProblem = false;
 		
 		//wakeup the sensor
-		temperature_wakeup();
+		temperatureHumidity_wakeup();
 		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
 		
 		if (isProblem)
 			continue;
 		
 		//measure temperature
-		temperature_measure();
+		temperatureHumidity_measure();
 		xTaskDelayUntil(&xLastWakeTime, xFrequency1);
 		
 		if (isProblem)
 			continue;
 		
 		//add latest temperature to the array
-		temperature_getLatestTemperature();
+		temperatureHumidity_getLatestTemperature();
+		temperatureHumidity_getLatestHumidity();
 		//wait 30 seconds for next measurement
 		xTaskDelayUntil(&xLastWakeTime, xFrequency3);
 	}
