@@ -7,6 +7,6 @@ typedef enum{
     UNDER
 }limitResult_t;
 
-void activationHandler_createServo(void);
+void activationHandler_createServo();
 
-void activationHandler_task(void* pvParameters);
+void activationHandler_task();

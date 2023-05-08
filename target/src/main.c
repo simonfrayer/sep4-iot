@@ -23,6 +23,7 @@
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
+#include "./include/activationHandler.h"
 
 // define semaphore handle
 SemaphoreHandle_t xTestSemaphore;
@@ -52,6 +53,16 @@ void create_tasks_and_semaphores(void)
 	,  NULL
 	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
 	,  NULL );
+
+	//  !!!!! UNCOMMENT IT !!!!!
+
+	// xTaskCreate(                      
+	// activationHandler_task
+	// ,  "activationHandlerTask"  // A name just for humans
+	// ,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
+	// ,  NULL
+	// ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	// ,  NULL );
 }
 
 /*-----------------------------------------------------------*/
@@ -63,8 +74,12 @@ void initialiseSystem()
 	// Make it possible to use stdio on COM port 0 (USB) on Arduino board - Setting 57600,8,N,1
 	stdio_initialise(ser_USART0);
 	
-	//initialize temperature sensor
+	//initialize temperature,humidity,co2 sensors
 	sensorsHandler_createSensors(); 
+
+	//initialize servo
+	//  !!!!! UNCOMMENT IT !!!!!
+	//activationHandler_createServo(); 
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();
