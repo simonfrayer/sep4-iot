@@ -5,8 +5,8 @@ typedef enum{
     OVER,
     WITHIN,
     UNDER
-}LimitResult_t;
+}limitResult_t;
 
 void activationHandler_createServo(void);
 
-void activationHandler_task(void);
+void activationHandler_task(void* pvParameters);

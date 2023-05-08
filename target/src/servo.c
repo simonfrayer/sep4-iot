@@ -11,7 +11,7 @@ void servo_create(){
 	printf("Initialization of servo was successful!\n");
 };
 
-int16_t servo_turnOn()
+void servo_turnOn()
 {
     void rc_servo_setPosition(0, 100)
     rintf("Servo is turned on!\n");
