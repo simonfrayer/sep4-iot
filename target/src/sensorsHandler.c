@@ -43,7 +43,8 @@ void sensorsHandler_task(void* pvParameters)
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 	const TickType_t xFrequency = 15000/portTICK_PERIOD_MS; // 150000 ms = 2.5 mins
-	
+	const TickType_t xFrequency2 = 300/portTICK_PERIOD_MS; // 300 ms
+
 	for(;;)
 	{
 		printf("SensorHandler Task Started\n");
@@ -52,9 +53,13 @@ void sensorsHandler_task(void* pvParameters)
 		temperatureMedian = temperatureHumidity_getTemperatureMedian();
 
 		//Without the delay we experienced some undesired behaviour in hterm when printing
-		xTaskDelayUntil(&xLastWakeTime, 30/portTICK_PERIOD_MS);
+		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
 
 		humidityMedian = temperatureHumidity_getHumidityMedian();
+
+		//Without the delay we experienced some undesired behaviour in hterm when printing
+		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
+
 		co2Median = co2_getCO2Median();
 
 		dataHandler_setTemperature(temperatureMedian);

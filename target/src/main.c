@@ -22,6 +22,7 @@
 
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
+#include "./include/co2.h"
 
 // define semaphore handle
 SemaphoreHandle_t xTestSemaphore;

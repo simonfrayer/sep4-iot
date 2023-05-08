@@ -33,11 +33,13 @@ void co2_measure(){
 
 void co2_getLatestCO2(){
 	uint16_t ppm;
-    mh_z19_returnCode_t rc = mh_z19_getCo2Ppm(&ppm);
+	uint16_t* ptr = &ppm;
+    mh_z19_returnCode_t rc = mh_z19_getCo2Ppm(ptr);
 
 	if (rc != MHZ19_OK)
 	{
 		printf("Getting of the measured mh_z19 (CO2 sensor) failed!\n");
+		printf("Returned value: %d", rc);
 		isProblem = true;
 	}
 	else{
@@ -115,7 +117,7 @@ void co2_task(void* pvParameters){
 	
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t xFrequency1 = 1/portTICK_PERIOD_MS; // 1 ms
+	const TickType_t xFrequency1 = 300/portTICK_PERIOD_MS; // 300 ms
 	const TickType_t xFrequency2 = 30000/portTICK_PERIOD_MS; // 30000 ms
 
 	//loop
