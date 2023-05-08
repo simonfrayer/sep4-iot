@@ -39,6 +39,10 @@ void sensorsHandler_task(void* pvParameters)
 		xTaskDelayUntil(&xLastWakeTime, xFrequency);
 		
 		temperatureMedian = temperatureHumidity_getTemperatureMedian();
+
+		//Without the delay we experienced some undesired behaviour in hterm when printing
+		xTaskDelayUntil(&xLastWakeTime, 30/portTICK_PERIOD_MS);
+
 		humidityMedian = temperatureHumidity_getHumidityMedian();
 		dataHandler_setTemperature(temperatureMedian);
 		dataHandler_setHumidity(humidityMedian);
