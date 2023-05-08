@@ -24,7 +24,8 @@
 			"functional": "c",
 			"compare": "c",
 			"chrono": "c",
-			"variant": "c"
+			"variant": "c",
+			"stdbool.h": "c"
 		}
 	}
 }

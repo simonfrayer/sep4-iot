@@ -4,5 +4,6 @@ target_sources(
     LoRaWANHandler.c
     dataHandler.c
     sensorsHandler.c
-    temperature.c
+    temperatureHumidity.c
+    co2.c
 )
