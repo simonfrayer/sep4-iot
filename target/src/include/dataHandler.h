@@ -9,7 +9,7 @@ struct MeasuredData {
 struct Limits {
 	int16_t minLimit;
 	int16_t maxLimit;
-}
+};
 
 struct MeasuredData dataHandler_getData();
 struct Limits dataHandler_getLimits();
