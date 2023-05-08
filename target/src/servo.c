@@ -13,13 +13,13 @@ void servo_create(){
 
 int16_t servo_turnOn()
 {
-    void rc_servo_setPosition(J14, 100)
+    void rc_servo_setPosition(0, 100)
     rintf("Servo is turned on!\n");
 }; 
 
 void servo_turnOff()
 {
-    void rc_servo_setPosition(J14, 0)
+    void rc_servo_setPosition(0, 0)
     rintf("Servo is turned off!\n");
 };
 
