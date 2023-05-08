@@ -44,7 +44,7 @@ void create_tasks_and_semaphores(void)
 			xSemaphoreGive( ( xTestSemaphore ) );  // Make the mutex available for use, by initially "Giving" the Semaphore.
 		}
 	}
-	
+
 	xTaskCreate(
 	sensorsHandler_task
 	,  "sensorHandlerTask"  // A name just for humans
@@ -73,7 +73,13 @@ void initialiseSystem()
 	// Status Leds driver
 	status_leds_initialise(5); // Priority 5 for internal task
 	// Initialise the LoRaWAN driver without down-link buffer
-	lora_driver_initialise(1, NULL);
+	//lora_driver_initialise(1, NULL);
+
+	// Initialise the LoRaWAN driver with down-link buffer
+	MessageBufferHandle_t downLinkMessageBufferHandle = xMessageBufferCreate(sizeof(lora_driver_payload_t)*2);
+	lora_driver_initialise(1,downLinkMessageBufferHandle);
+
+
 	// Create LoRaWAN task and start it up with priority 3
 	lora_handler_initialise(3);
 }
