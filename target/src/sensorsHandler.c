@@ -42,7 +42,7 @@ void sensorsHandler_task(void* pvParameters)
 	
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t xFrequency = 30000/portTICK_PERIOD_MS; // 300000 ms == 5 mins
+	const TickType_t xFrequency = 15000/portTICK_PERIOD_MS; // 150000 ms = 2.5 mins
 	
 	for(;;)
 	{
