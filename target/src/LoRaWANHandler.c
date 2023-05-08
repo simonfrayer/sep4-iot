@@ -8,7 +8,7 @@
 
 #include "./include/dataHandler.h"
 
-extern MessageBufferHandle_t downLinkMessageBufferHandle;
+MessageBufferHandle_t downLinkMessageBufferHandle;
 
 // Parameters for OTAA join
 #define LORA_appEUI "05ABE2835032EC3E"
@@ -161,15 +161,18 @@ void lora_handler_task( void *pvParameters )
 	}
 }
 
-	void lora_downlink_task( void *pvParameters)
+void lora_downlink_task( void *pvParameters)
+{
+	for(;;)
 	{
-		for(;;)
-		{
-			lora_driver_payload_t downlinkPayload;
-			xMessageBufferReceive(downLinkMessageBufferHandle, &downlinkPayload, sizeof(lora_driver_payload_t), portMAX_DELAY);
-			int16_t minTemperatureLimit = (downlinkPayload.bytes[0] << 8) + downlinkPayload.bytes[1];
-			int16_t maxTemperatureLimit = (downlinkPayload.bytes[2] << 8) + downlinkPayload.bytes[3];
-			printf("Downlink received: %d %d\n", minTemperatureLimit, maxTemperatureLimit);
-			dataHandler_setLimits(minTemperatureLimit, maxTemperatureLimit);
-		}	
-	}
+		lora_driver_payload_t downlinkPayload;
+		xMessageBufferReceive(downLinkMessageBufferHandle, &downlinkPayload, sizeof(lora_driver_payload_t), portMAX_DELAY);
+		
+		int16_t minTemperatureLimit = (downlinkPayload.bytes[0] << 8) + downlinkPayload.bytes[1];
+		int16_t maxTemperatureLimit = (downlinkPayload.bytes[2] << 8) + downlinkPayload.bytes[3];
+		
+		printf("Downlink received: %d %d\n", minTemperatureLimit, maxTemperatureLimit);
+		
+		//dataHandler_setLimits(minTemperatureLimit, maxTemperatureLimit);
+	}	
+}
