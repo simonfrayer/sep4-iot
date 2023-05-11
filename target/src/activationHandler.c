@@ -11,7 +11,7 @@
 void activationHandler_createServo()
 {
     servo_create();
-};
+}
 
 static limitResult_t activationHandler_compare(int16_t temperature, int16_t minLimit, int16_t maxLimit)
 {
@@ -59,5 +59,5 @@ void activationHandler_task(void* pvParameters)
             servo_turnOn();
         }
 	}
-};
+}
 
