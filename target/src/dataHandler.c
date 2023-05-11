@@ -34,4 +34,5 @@ void dataHandler_setCO2(int16_t sensorCO2){
 void dataHandler_setLimits(int16_t minLimit, int16_t maxLimit) {
 	limits.minLimit = minLimit;
 	limits.maxLimit = maxLimit;
+	printf("***SetLimits Called***\n minLimit: %d\n maxLimit: %d\n", minLimit, maxLimit);
 }

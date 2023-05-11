@@ -19,11 +19,16 @@
  // Needed for LoRaWAN
 #include <lora_driver.h>
 #include <status_leds.h>
+#include <message_buffer.h>
 
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
 #include "./include/activationHandler.h"
+
+MessageBufferHandle_t downLinkMessageBuffer;
+
+
 
 // define semaphore handle
 SemaphoreHandle_t xTestSemaphore;
@@ -45,7 +50,7 @@ void create_tasks_and_semaphores(void)
 			xSemaphoreGive( ( xTestSemaphore ) );  // Make the mutex available for use, by initially "Giving" the Semaphore.
 		}
 	}
-	
+
 	xTaskCreate(
 	sensorsHandler_task
 	,  "sensorHandlerTask"  // A name just for humans
@@ -85,7 +90,13 @@ void initialiseSystem()
 	// Status Leds driver
 	status_leds_initialise(5); // Priority 5 for internal task
 	// Initialise the LoRaWAN driver without down-link buffer
-	lora_driver_initialise(1, NULL);
+	//lora_driver_initialise(1, NULL);
+
+	// Initialise the LoRaWAN driver with down-link buffer
+	downLinkMessageBuffer = xMessageBufferCreate(sizeof(lora_driver_payload_t)*2);
+	lora_driver_initialise(1,downLinkMessageBuffer);
+
+
 	// Create LoRaWAN task and start it up with priority 3
 	lora_handler_initialise(3);
 }
