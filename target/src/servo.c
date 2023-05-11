@@ -4,6 +4,9 @@
 #include <rc_servo.h>
 #include "./include/servo.h"
 
+static uint8_t servoNo = 0;
+static int8_t position;
+
 void servo_create(){
 
 	rc_servo_initialise();
@@ -13,13 +16,15 @@ void servo_create(){
 
 void servo_turnOn()
 {
-    void rc_servo_setPosition(0, 100)
-    rintf("Servo is turned on!\n");
+    position = 100;
+    rc_servo_setPosition(servoNo, position);
+    printf("Servo is turned off!\n");
 }; 
 
 void servo_turnOff()
 {
-    void rc_servo_setPosition(0, 0)
-    rintf("Servo is turned off!\n");
+    position = 0;
+    rc_servo_setPosition(servoNo, position);
+    printf("Servo is turned off!\n");
 };
 

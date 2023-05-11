@@ -54,15 +54,13 @@ void create_tasks_and_semaphores(void)
 	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
 	,  NULL );
 
-	//  !!!!! UNCOMMENT IT !!!!!
-
-	// xTaskCreate(                      
-	// activationHandler_task
-	// ,  "activationHandlerTask"  // A name just for humans
-	// ,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
-	// ,  NULL
-	// ,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-	// ,  NULL );
+	xTaskCreate(                      
+	activationHandler_task
+	,  "activationHandlerTask"  // A name just for humans
+	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
+	,  NULL
+	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	,  NULL );
 }
 
 /*-----------------------------------------------------------*/
@@ -78,8 +76,7 @@ void initialiseSystem()
 	sensorsHandler_createSensors(); 
 
 	//initialize servo
-	//  !!!!! UNCOMMENT IT !!!!!
-	//activationHandler_createServo(); 
+	activationHandler_createServo(); 
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();

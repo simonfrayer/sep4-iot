@@ -5,9 +5,8 @@
 #include <task.h>
 #include "./include/servo.h"
 #include "./include/dataHandler.h"
+#include "./include/activationHandler.h"
 
-
-static int16_t temperatureMedian;
 
 void activationHandler_createServo()
 {
@@ -46,8 +45,8 @@ void activationHandler_task(void* pvParameters)
 		printf("activationHandler Task Started\n");
 		xTaskDelayUntil(&xLastWakeTime, xFrequency);
 		
-		MeasuredData data = dataHandler_getData();
-        Limits limits = dataHandler_getLimits();
+		struct MeasuredData data = dataHandler_getData();
+        struct Limits limits = dataHandler_getLimits();
 
         limitResult_t result = activationHandler_compare(data.temperature, limits.minLimit, limits.maxLimit);
 
