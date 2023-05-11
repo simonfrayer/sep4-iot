@@ -6,4 +6,6 @@ target_sources(
     sensorsHandler.c
     temperatureHumidity.c
     co2.c
+    activationHandler.c
+    servo.c
 )
