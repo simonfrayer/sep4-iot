@@ -19,10 +19,13 @@
  // Needed for LoRaWAN
 #include <lora_driver.h>
 #include <status_leds.h>
+#include <message_buffer.h>
 
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
+
+MessageBufferHandle_t downLinkMessageBuffer;
 
 // define semaphore handle
 SemaphoreHandle_t xTestSemaphore;
@@ -76,8 +79,8 @@ void initialiseSystem()
 	//lora_driver_initialise(1, NULL);
 
 	// Initialise the LoRaWAN driver with down-link buffer
-	MessageBufferHandle_t downLinkMessageBufferHandle = xMessageBufferCreate(sizeof(lora_driver_payload_t)*2);
-	lora_driver_initialise(1,downLinkMessageBufferHandle);
+	downLinkMessageBuffer = xMessageBufferCreate(sizeof(lora_driver_payload_t)*2);
+	lora_driver_initialise(1,downLinkMessageBuffer);
 
 
 	// Create LoRaWAN task and start it up with priority 3
