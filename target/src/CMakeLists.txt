@@ -6,4 +6,5 @@ target_sources(
     sensorsHandler.c
     temperatureHumidity.c
     co2.c
+    medianCalculator.c
 )
