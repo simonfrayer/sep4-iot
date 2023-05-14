@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
-#include <stdio.h>
-#include <stdint.h>
+
 
 extern "C" {
-    #include "../../target/src/include/medianCalculator.h"
+    #include <stdio.h>
+    #include <stdint.h>
+    #include "medianCalculator.h"
 }
 
 class MedianCalculatorTest : public::testing::Test{

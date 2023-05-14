@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "fff/fff.h"
+#include "fff.h"
 
 // Demonstrate some basic assertions.
 TEST(HelloTest, BasicAssertions) {

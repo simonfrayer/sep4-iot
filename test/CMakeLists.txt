@@ -16,6 +16,7 @@ FetchContent_Declare(
   URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
 FetchContent_MakeAvailable(googletest)
 
 include(GoogleTest)
@@ -25,13 +26,20 @@ add_executable(
   ""
 )
 
-include_directories(include)
+# This makes the test.cpp files able to #include target libraries without errors.  
+include_directories(
+  ./include/fff
+  ../target/src/include/
+  ../target/drivers/include/
+  )
+
 
 add_subdirectory(src)
+
 
 target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main
 )
 
-gtest_discover_tests(  ${PROJECT_NAME})
+gtest_discover_tests(${PROJECT_NAME})
