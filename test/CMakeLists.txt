@@ -24,7 +24,7 @@ include(GoogleTest)
 
 include_directories(
   ./include
-  ../target
+  ../target/src/include/
   )
 
 

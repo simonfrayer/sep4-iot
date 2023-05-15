@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 extern "C" {
-    #include "../../target/src/include/medianCalculator.h"
+    #include "medianCalculator.h"
 }
 
 class MedianCalculatorTest : public::testing::Test{
