@@ -10,17 +10,19 @@ extern "C" {
 class DataHandlerTest : public::testing::Test{
     protected:
         void SetUp() override{
-            int16_t limit1 = 10;
-            int16_t limit2 = 30;
+            //setting limits
+            limit1 = 10;
+            limit2 = 30;
             dataHandler_setLimits(limit1, limit2);
         }
         void TearDown() override{}
+
+        int16_t limit1;
+        int16_t limit2;
 };
 
 TEST_F(DataHandlerTest, GetLimits) {
     //Arrange
-    int16_t limit1 = 10;
-    int16_t limit2 = 30;
     static struct Limits limits;
     //Act
     limits = dataHandler_getLimits();
