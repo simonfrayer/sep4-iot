@@ -21,20 +21,18 @@ FetchContent_MakeAvailable(googletest)
 
 include(GoogleTest)
 
-  add_executable(
-    ${PROJECT_NAME}
-    ""
-  )
-
-# This makes the test.cpp files able to #include target libraries without errors.  
 include_directories(
   ./include/fff
   ../target/src/include/
   ../target/drivers/include/
   )
-
-add_subdirectory(src)
-
+  
+  add_subdirectory(src)
+  
+  add_executable(
+  ${PROJECT_NAME}
+  ""
+  )
 target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main

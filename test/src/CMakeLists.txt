@@ -3,4 +3,5 @@ target_sources(
     hello_test.cpp
     medianCalculator_test.cpp
     mockTemperatureSensor_test.cpp
+    ../../target/src/medianCalculator.c
 )
