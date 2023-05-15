@@ -7,4 +7,4 @@ int16_t temperatureHumidity_getTemperatureMedian();
 int16_t temperatureHumidity_getHumidityMedian();
 void temperatureHumidity_init();
 void temperatureHumidity_run(void);
-void temperatureHumidity_CreateTask();
+void temperatureHumidity_createTask();

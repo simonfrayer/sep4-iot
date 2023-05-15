@@ -79,37 +79,16 @@ int16_t temperatureHumidity_getHumidityMedian() {
 	return medianCalculator_calculateMedian(humidities, 10);
 }
 
-void temperatureHumidity_task(void* pvParameters){
+static void temperatureHumidity_task(void* pvParameters){
 	// Remove compiler warnings
 	(void)pvParameters;
 
+	temperatureHumidity_init();
 
 	//loop
 	for (;;)
 	{
-		printf("Temperature Task started\n");
-		
-		isProblem = false;
-		
-		//wakeup the sensor
-		temperatureHumidity_wakeup();
-		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
-		
-		if (isProblem)
-			continue;
-		
-		//measure temperature
-		temperatureHumidity_measure();
-		xTaskDelayUntil(&xLastWakeTime, xFrequency1);
-		
-		if (isProblem)
-			continue;
-		
-		//add latest temperature to the array
-		temperatureHumidity_getLatestTemperature();
-		temperatureHumidity_getLatestHumidity();
-		//wait 30 seconds for next measurement
-		xTaskDelayUntil(&xLastWakeTime, xFrequency3);
+		temperatureHumidity_run();
 	}
 }
 
@@ -148,6 +127,14 @@ void temperatureHumidity_run(void)
 		xTaskDelayUntil(&xLastWakeTime, xFrequency3);
 }
 
-void temperatureHumidity_CreateTask(){
+void temperatureHumidity_createTask()
+{
+	xTaskCreate(
+	temperatureHumidity_task
+	,  "temperatureHumidityTask"  // A name just for humans
+	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
+	,  NULL
+	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	,  NULL );
 
 }
