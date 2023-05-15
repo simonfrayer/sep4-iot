@@ -52,7 +52,7 @@ void create_tasks_and_semaphores(void)
 
 	if (limitMutex == NULL)
 	{
-		limitMutex = xSempaphoreCreateMutex();
+		limitMutex = xSemaphoreCreateMutex();
 		printf("limitMutex created\n");
 		if((limitMutex) != NULL)
 		{
