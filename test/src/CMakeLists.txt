@@ -3,4 +3,6 @@ target_sources(
     hello_test.cpp
     medianCalculator_test.cpp
     ../../target/src/medianCalculator.c
+    dataHandler_test.cpp
+    ../../target/src/dataHandler.c
 )
