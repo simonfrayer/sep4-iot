@@ -23,3 +23,15 @@ TEST_F(MedianCalculatorTest, CorrectInput) {
     //Assert
     EXPECT_EQ(result, 245);
 }
+
+TEST_F(MedianCalculatorTest, EmptyArray) {
+    //Arrange
+    int16_t arr[10] = {};
+    int arrayLength = sizeof(arr) / sizeof(arr[0]);
+    int16_t result;
+    //Act
+    result = medianCalculator_calculateMedian(arr, arrayLength);
+    //Assert
+    EXPECT_EQ(result, 0);
+}
+
