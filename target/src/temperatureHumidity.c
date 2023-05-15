@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "./include/temperatureHumidity.h"
+#include "./include/medianCalculator.h"
 #include <hih8120.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
@@ -66,74 +67,12 @@ static void temperatureHumidity_getLatestHumidity() {
 		indexOfLatestHumidity = 0;
 }
 
-// compare method for the quicksort
-static int16_t temperatureHumidity_compare(const void *a, const void *b)
-{
-	return (*(int16_t *)a - *(int16_t *)b);
-}
-
-// so this is O(n log n)
-// it could be liner with the use of a heap
-//true for temperature, false for humidity
-static int16_t temperatureHumidity_calculateMedian(bool isTemperature)
-{
-	printf("Getting median %s\n", isTemperature ? "temperature" : "humidity");
-
-	// make a copy of temperatures
-	int16_t dataCopy[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
-
-	memcpy(dataCopy, isTemperature ? temperatures : humidities, 10 * sizeof(int16_t));
-
-	// sort the array
-	qsort(dataCopy, 10, sizeof(int16_t), temperatureHumidity_compare);
-
-	// print the sorted array
-	for (int i = 0; i < 10; i++)
-	{
-		printf("%d, ", dataCopy[i]);
-	}
-	printf("\n");
-
-	// calculate the amount of elements that are outside of the range
-	// they represent some sort of error / initial value
-	int amountOfErrors = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		if (dataCopy[i] < -400)
-		{
-			amountOfErrors++;
-		}
-	}
-
-	printf("Amount of errors: %d\n", amountOfErrors);
-
-	// get the median
-	if (amountOfErrors == 10)
-	{
-		// if all the elements are errors
-		// return the initial value
-		return -666;
-	}
-
-	// if odd number of errors
-	// return the middle element
-	if (amountOfErrors % 2 == 1)
-	{
-		return dataCopy[(10 + amountOfErrors - 1) / 2];
-	}
-
-	// if even number of errors
-	// return the average of the two middle elements
-	printf("The two middle elements are: %d and %d\n", dataCopy[(10 + amountOfErrors) / 2 - 1], dataCopy[(10 + amountOfErrors) / 2]);
-	return (dataCopy[(10 + amountOfErrors) / 2 - 1] + dataCopy[(10 + amountOfErrors) / 2]) / 2;
-}
-
 int16_t temperatureHumidity_getTemperatureMedian() {
-	return temperatureHumidity_calculateMedian(true);
+	return medianCalculator_calculateMedian(temperatures, 10);
 }
 
 int16_t temperatureHumidity_getHumidityMedian() {
-	return temperatureHumidity_calculateMedian(false);
+	return medianCalculator_calculateMedian(humidities, 10);
 }
 
 void temperatureHumidity_task(void* pvParameters){

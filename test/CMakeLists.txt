@@ -20,13 +20,15 @@ FetchContent_MakeAvailable(googletest)
 
 include(GoogleTest)
 
-add_executable(
+include_directories(
+  ./include
+  ../target/src/include/
+  )
+
+  add_executable(
   ${PROJECT_NAME}
   ""
 )
-
-include_directories(include)
-
 add_subdirectory(src)
 
 target_link_libraries(
