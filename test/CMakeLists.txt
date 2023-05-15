@@ -27,12 +27,14 @@ include_directories(
   ../target/drivers/include/
   )
   
-  add_subdirectory(src)
   
   add_executable(
-  ${PROJECT_NAME}
-  ""
-  )
+    ${PROJECT_NAME}
+    ""
+    )
+    
+    add_subdirectory(src)
+    
 target_link_libraries(
   ${PROJECT_NAME}
   GTest::gtest_main
