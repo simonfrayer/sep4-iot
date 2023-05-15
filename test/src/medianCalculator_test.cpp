@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 
@@ -12,7 +13,6 @@ class MedianCalculatorTest : public::testing::Test{
         void TearDown() override{}
 };
 
-// Demonstrate some basic assertions.
 TEST_F(MedianCalculatorTest, CorrectInput) {
     //Arrange
     int16_t arr[10] = {100, 50, -45, -400, 500, 257, 234, 353, 608, 15};
