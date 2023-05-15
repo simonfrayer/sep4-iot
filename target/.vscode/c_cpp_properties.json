@@ -1,15 +1,50 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "PlatformIO",
             "includePath": [
-                "${workspaceFolder}/**"
+                "/workspaces/sep4-iot/target/include",
+                "/workspaces/sep4-iot/target/src",
+                "/root/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/root/.platformio/packages/framework-arduino-avr/variants/mega",
+                "/root/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/root/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/root/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/root/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "/root/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                ""
             ],
-            "defines": [],
-            "compilerPath": "/usr/bin/avr-gcc",
-            "cStandard": "c17",
-            "cppStandard": "gnu++17",
-            "intelliSenseMode": "linux-gcc-x64",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/workspaces/sep4-iot/target/include",
+                    "/workspaces/sep4-iot/target/src",
+                    "/root/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/root/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "/root/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/root/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/root/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/root/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "/root/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60106",
+                "ARDUINO_AVR_MEGA2560",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/root/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ],
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],

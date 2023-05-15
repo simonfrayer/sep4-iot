@@ -1,9 +1,3 @@
-/*
-* loraWANHandler.c
-*
-* Created: 12/04/2019 10:09:05
-*  Author: IHA
-*/
 #include <stddef.h>
 #include <stdio.h>
 
@@ -11,16 +5,22 @@
 
 #include <lora_driver.h>
 #include <status_leds.h>
+#include <message_buffer.h>
 
-// Parameters for OTAA join - You have got these in a mail from IHA
+#include "./include/dataHandler.h"
+
+
+// Parameters for OTAA join
 #define LORA_appEUI "05ABE2835032EC3E"
 #define LORA_appKEY "B90973872CFD40F5E380185AD43FC18C"
 
 void lora_handler_task( void *pvParameters );
 
-static lora_driver_payload_t _uplink_payload;
+static lora_driver_payload_t _uplink_payload; //Define the uplink payload
 
-void lora_handler_initialise(UBaseType_t lora_handler_task_priority)
+extern MessageBufferHandle_t downLinkMessageBuffer;
+ 
+void lora_handler_initialise(UBaseType_t lora_handler_task_priority, MessageBufferHandle_t downlinkMessageBuffer)
 {
 	xTaskCreate(
 	lora_handler_task
@@ -29,6 +29,7 @@ void lora_handler_initialise(UBaseType_t lora_handler_task_priority)
 	,  NULL
 	,  lora_handler_task_priority  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
 	,  NULL );
+
 }
 
 static void _lora_setup(void)
@@ -121,6 +122,10 @@ void lora_handler_task( void *pvParameters )
 	_uplink_payload.len = 6;
 	_uplink_payload.portNo = 2;
 
+	//Setting up for the downlink
+	
+	lora_driver_payload_t downlinkPayload;
+
 	TickType_t xLastWakeTime;
 	const TickType_t xFrequency = pdMS_TO_TICKS(300000UL); // Upload message every 5 minutes (300000 ms)
 	xLastWakeTime = xTaskGetTickCount();
@@ -128,20 +133,41 @@ void lora_handler_task( void *pvParameters )
 	for(;;)
 	{
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
+		
+		struct MeasuredData measuredData = dataHandler_getData();
 
-		// Some dummy payload
-		uint16_t hum = 5432; // Dummy humidity
-		int16_t temp = 123; // Dummy temp
-		uint16_t co2_ppm = 40; // Dummy CO2
+		int16_t temp = measuredData.temperature; // The REAL temp
+		uint16_t hum = measuredData.humidity; // The REAL humidity
+		uint16_t co2_ppm = measuredData.co2; // The REAL CO2
 
-		_uplink_payload.bytes[0] = hum >> 8;
-		_uplink_payload.bytes[1] = hum & 0xFF;
-		_uplink_payload.bytes[2] = temp >> 8;
-		_uplink_payload.bytes[3] = temp & 0xFF;
+		
+		printf("Real temperature in LoRaWAN Handler: %d\n", temp);
+		printf("Real humidity in LoRaWAN Handler: %d\n", hum);
+
+		_uplink_payload.bytes[0] = temp >> 8;
+		_uplink_payload.bytes[1] = temp & 0xFF;
+		_uplink_payload.bytes[2] = hum >> 8;
+		_uplink_payload.bytes[3] = hum & 0xFF;
 		_uplink_payload.bytes[4] = co2_ppm >> 8;
 		_uplink_payload.bytes[5] = co2_ppm & 0xFF;
 
+		lora_driver_returnCode_t rc;
+
 		status_leds_shortPuls(led_ST4);  // OPTIONAL
-		printf("Upload Message >%s<\n", lora_driver_mapReturnCodeToText(lora_driver_sendUploadMessage(false, &_uplink_payload)));
+		
+		if((rc = lora_driver_sendUploadMessage(false, &_uplink_payload)) == LORA_MAC_TX_OK)
+		{
+			printf("*****Uplink sent*****: >%s<", lora_driver_mapReturnCodeToText(rc));
+		}
+		else if(rc == LORA_MAC_RX) //There is a message to be received
+		{	
+			printf("****Uplink sent*****\n");
+			xMessageBufferReceive(downLinkMessageBuffer, &downlinkPayload, sizeof(lora_driver_payload_t), portMAX_DELAY);
+			printf("Message length: %d \n",downlinkPayload.len);
+			uint16_t minTemperatureLimit = (downlinkPayload.bytes[0] << 8) + downlinkPayload.bytes[1];
+			uint16_t maxTemperatureLimit = (downlinkPayload.bytes[2] << 8) + downlinkPayload.bytes[3];
+			printf("Received downlink: %d + %d\n", minTemperatureLimit, maxTemperatureLimit);
+			dataHandler_setLimits(minTemperatureLimit, maxTemperatureLimit);
+		}
 	}
 }
