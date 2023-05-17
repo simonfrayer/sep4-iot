@@ -14,10 +14,10 @@ static int indexOfLatestTemperature = 0;
 static int16_t humidities[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
 static int indexOfLatestHumidity = 0;
 static bool isProblem = false;
-static const TickType_t xFrequency1;
-static const TickType_t xFrequency2;
-static const TickType_t xFrequency3;
-static const TickType_t xLastWakeTime;
+static TickType_t xFrequency1;
+static TickType_t xFrequency2;
+static TickType_t xFrequency3;
+static TickType_t xLastWakeTime;
 
 void temperatureHumidity_create(){
 	hih8120_driverReturnCode_t result = hih8120_initialise();
@@ -108,21 +108,22 @@ void temperatureHumidity_run(void)
 		
 		//wakeup the sensor
 		temperatureHumidity_wakeup();
-		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
+		vTaskDelay(xFrequency2);
 		
-		if (isProblem)
-			continue;
+		if (!isProblem)
+		{
+			//measure temperature
+			temperatureHumidity_measure();
+			vTaskDelay(xFrequency1);
 		
-		//measure temperature
-		temperatureHumidity_measure();
-		xTaskDelayUntil(&xLastWakeTime, xFrequency1);
+			if (!isProblem)
+			{
+				//add latest temperature to the array
+				temperatureHumidity_getLatestTemperature();
+				temperatureHumidity_getLatestHumidity();
+			}
+		}
 		
-		if (isProblem)
-			continue;
-		
-		//add latest temperature to the array
-		temperatureHumidity_getLatestTemperature();
-		temperatureHumidity_getLatestHumidity();
 		//wait 30 seconds for next measurement
 		xTaskDelayUntil(&xLastWakeTime, xFrequency3);
 }
