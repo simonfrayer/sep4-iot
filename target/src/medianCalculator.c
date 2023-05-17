@@ -6,7 +6,7 @@
 
 
 // compare method for the quicksort
-static int16_t medianCalculator_compare(const void *a, const void *b)
+static int medianCalculator_compare(const void *a, const void *b)
 {
     return (*(int16_t *)a - *(int16_t *)b);
 }
