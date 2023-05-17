@@ -26,16 +26,10 @@ void sensorsHandler_createSensors()
 	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
 	,  NULL );
 
-	xTaskCreate(
-	co2_task
-	,  "co2Task"  // A name just for humans
-	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
-	,  NULL
-	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-	,  NULL );
+	co2_taskCreate();
 }
 
-void sensorsHandler_task(void* pvParameters)
+static void sensorsHandler_task(void* pvParameters)
 {
 	// Remove compiler warnings
 	(void)pvParameters;
@@ -66,4 +60,15 @@ void sensorsHandler_task(void* pvParameters)
 		dataHandler_setHumidity(humidityMedian);
 		dataHandler_setCO2(co2Median);
 	}
+}
+
+void sensorsHandler_taskCreate()
+{
+	xTaskCreate(
+	sensorsHandler_task
+	,  "sensorHandlerTask"  // A name just for humans
+	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
+	,  NULL
+	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	,  NULL );
 }

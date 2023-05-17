@@ -60,13 +60,7 @@ void create_tasks_and_semaphores(void)
 		}
 	}
 
-	xTaskCreate(
-	sensorsHandler_task
-	,  "sensorHandlerTask"  // A name just for humans
-	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
-	,  NULL
-	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-	,  NULL );
+	sensorsHandler_taskCreate();
 }
 
 /*-----------------------------------------------------------*/
