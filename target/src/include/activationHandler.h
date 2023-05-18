@@ -8,5 +8,6 @@ typedef enum{
 }limitResult_t;
 
 void activationHandler_createServo();
-
-void activationHandler_task();
+void activationHandler_init();
+void activationHandler_run(void);
+void activationHandler_createTask();
