@@ -9,13 +9,20 @@ extern "C"
 	#include "dataHandler.h"
 	#include "temperatureHumidity.h"
 	#include "sensorsHandler.h"
+	#include "co2.h"
 }
 
 //--- Create Mocks---
 FAKE_VOID_FUNC(temperatureHumidity_create);
 FAKE_VOID_FUNC(temperatureHumidity_createTask);
 FAKE_VALUE_FUNC(int16_t, temperatureHumidity_getTemperatureMedian);
+FAKE_VALUE_FUNC(int16_t, temperatureHumidity_getHumidityMedian);
+FAKE_VOID_FUNC(co2_create);
+FAKE_VALUE_FUNC(int16_t, co2_getCO2Median);
+FAKE_VOID_FUNC(co2_createTask);
 FAKE_VOID_FUNC(dataHandler_setTemperature, int16_t);
+FAKE_VOID_FUNC(dataHandler_setHumidity, int16_t);
+FAKE_VOID_FUNC(dataHandler_setCO2, int16_t);
 
 // Create Test fixture and Reset all Mocks before each test
 class Test_sensorsHandler : public ::testing::Test
@@ -26,7 +33,13 @@ protected:
 		RESET_FAKE(temperatureHumidity_create);
 		RESET_FAKE(temperatureHumidity_createTask);
 		RESET_FAKE(temperatureHumidity_getTemperatureMedian);
+		RESET_FAKE(temperatureHumidity_getHumidityMedian);
+		RESET_FAKE(co2_create);
+		RESET_FAKE(co2_getCO2Median);
+		RESET_FAKE(co2_createTask);
 		RESET_FAKE(dataHandler_setTemperature);
+		RESET_FAKE(dataHandler_setHumidity);
+		RESET_FAKE(dataHandler_setCO2);
 		RESET_FAKE(vTaskDelay);
 		RESET_FAKE(xTaskDelayUntil);
 		RESET_FAKE(xTaskGetTickCount);
