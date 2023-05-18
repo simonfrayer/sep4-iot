@@ -17,7 +17,6 @@ FAKE_VALUE_FUNC(hih8120_driverReturnCode_t, hih8120_wakeup);
 FAKE_VALUE_FUNC(hih8120_driverReturnCode_t, hih8120_measure);
 FAKE_VALUE_FUNC(uint16_t, hih8120_getHumidityPercent_x10);
 FAKE_VALUE_FUNC(int16_t, hih8120_getTemperature_x10);
-FAKE_VALUE_FUNC(int16_t, medianCalculator_calculateMedian, int16_t[], int);
 
 // Create Test fixture and Reset all Mocks before each test
 class Test_temperatureHumidity : public ::testing::Test
@@ -208,29 +207,29 @@ TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_OK) {
 	EXPECT_EQ(1, xTaskCreate_fake.call_count);
 }
 
-// TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_OUT_OF_HEAP) {
-// 	hih8120_initialise_fake.return_val = HIH8120_OUT_OF_HEAP;
+TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_OUT_OF_HEAP) {
+	hih8120_initialise_fake.return_val = HIH8120_OUT_OF_HEAP;
 
-// 	temperatureHumidity_create();
-// 	temperatureHumidity_createTask();
+	temperatureHumidity_create();
+	temperatureHumidity_createTask();
 
-// 	EXPECT_EQ(0, xTaskCreate_fake.call_count);
-// }
+	EXPECT_EQ(0, xTaskCreate_fake.call_count);
+}
 
-// TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_DRIVER_NOT_INITIALISED) {
-// 	hih8120_initialise_fake.return_val = HIH8120_DRIVER_NOT_INITIALISED;
+TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_DRIVER_NOT_INITIALISED) {
+	hih8120_initialise_fake.return_val = HIH8120_DRIVER_NOT_INITIALISED;
 
-// 	temperatureHumidity_create();
-// 	temperatureHumidity_createTask();
+	temperatureHumidity_create();
+	temperatureHumidity_createTask();
 
-// 	EXPECT_EQ(0, xTaskCreate_fake.call_count);
-// }
+	EXPECT_EQ(0, xTaskCreate_fake.call_count);
+}
 
-// TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_TWI_BUS) {
-// 	hih8120_initialise_fake.return_val = HIH8120_TWI_BUSY;
+TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_TWI_BUS) {
+	hih8120_initialise_fake.return_val = HIH8120_TWI_BUSY;
 
-// 	temperatureHumidity_create();
-// 	temperatureHumidity_createTask();
+	temperatureHumidity_create();
+	temperatureHumidity_createTask();
 
-// 	EXPECT_EQ(0, xTaskCreate_fake.call_count);
-// }
+	EXPECT_EQ(0, xTaskCreate_fake.call_count);
+}

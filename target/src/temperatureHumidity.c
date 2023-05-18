@@ -24,6 +24,7 @@ void temperatureHumidity_create(){
 	hih8120_driverReturnCode_t result = hih8120_initialise();
 	if(result != HIH8120_OK){
 		printf("Initialization of hih8120 failed!\n");
+		isSensorInitialized = false;
 	}
 	else{
 		isSensorInitialized = true;
