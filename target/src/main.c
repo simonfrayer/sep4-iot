@@ -24,8 +24,12 @@
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
+#include "./include/activationHandler.h"
+#include "./include/dataHandler.h"
 
 MessageBufferHandle_t downLinkMessageBuffer;
+
+
 
 // define semaphore handle
 SemaphoreHandle_t dataMutex;
@@ -43,7 +47,7 @@ void create_tasks_and_semaphores(void)
 	if (dataMutex == NULL )  // Check to confirm that the Semaphore has not already been created.
 	{
 		dataMutex = xSemaphoreCreateMutex();  // Create a mutex semaphore.
-		printf("dataMutex created\n");
+		//printf("dataMutex created\n");
 		if ( ( dataMutex ) != NULL )
 		{
 			xSemaphoreGive( dataMutex );  // Make the mutex available for use, by initially "Giving" the Semaphore.
@@ -53,7 +57,7 @@ void create_tasks_and_semaphores(void)
 	if (limitMutex == NULL)
 	{
 		limitMutex = xSemaphoreCreateMutex();
-		printf("limitMutex created\n");
+		//printf("limitMutex created\n");
 		if((limitMutex) != NULL)
 		{
 			xSemaphoreGive( limitMutex);
@@ -61,6 +65,14 @@ void create_tasks_and_semaphores(void)
 	}
 
 	sensorsHandler_createTask();
+
+	xTaskCreate(                      
+	activationHandler_task
+	,  "activationHandlerTask"  // A name just for humans
+	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
+	,  NULL
+	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	,  NULL );
 }
 
 /*-----------------------------------------------------------*/
@@ -72,11 +84,17 @@ void initialiseSystem()
 	// Make it possible to use stdio on COM port 0 (USB) on Arduino board - Setting 57600,8,N,1
 	stdio_initialise(ser_USART0);
 	
-	//initialize temperature sensor
+	//initialize temperature,humidity,co2 sensors
 	sensorsHandler_createSensors(); 
+
+	//initialize servo
+	activationHandler_createServo(); 
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();
+
+	//Set an initial limit for the servo
+	dataHandler_setLimits(10,15);
 
 	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialisation vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	// Status Leds driver
