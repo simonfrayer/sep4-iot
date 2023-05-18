@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+
 enable_testing()
 
 include(FetchContent)
@@ -20,15 +21,19 @@ FetchContent_MakeAvailable(googletest)
 
 include(GoogleTest)
 
+
 include_directories(
   ./include
-  ../target/src/include/
+  ../target/drivers/include
+  ../target/src/include
+  )
+  
+  
+  add_executable(
+    ${PROJECT_NAME}
+    ""
   )
 
-  add_executable(
-  ${PROJECT_NAME}
-  ""
-)
 add_subdirectory(src)
 
 target_link_libraries(

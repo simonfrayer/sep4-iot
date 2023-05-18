@@ -14,6 +14,10 @@ static int indexOfLatestTemperature = 0;
 static int16_t humidities[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
 static int indexOfLatestHumidity = 0;
 static bool isProblem = false;
+static TickType_t xFrequency1;
+static TickType_t xFrequency2;
+static TickType_t xFrequency3;
+static TickType_t xLastWakeTime;
 
 void temperatureHumidity_create(){
 	hih8120_driverReturnCode_t result = hih8120_initialise();
@@ -75,20 +79,30 @@ int16_t temperatureHumidity_getHumidityMedian() {
 	return medianCalculator_calculateMedian(humidities, 10);
 }
 
-void temperatureHumidity_task(void* pvParameters){
+static void temperatureHumidity_task(void* pvParameters){
 	// Remove compiler warnings
 	(void)pvParameters;
-	
-	TickType_t xLastWakeTime;
-	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t xFrequency1 = 1/portTICK_PERIOD_MS; // 1 ms
-	const TickType_t xFrequency2 = 50/portTICK_PERIOD_MS; // 50 ms
-	const TickType_t xFrequency3 = 30000/portTICK_PERIOD_MS; // 30000 ms
+
+	temperatureHumidity_init();
 
 	//loop
 	for (;;)
 	{
-		printf("Temperature Task started\n");
+		temperatureHumidity_run();
+	}
+}
+
+void temperatureHumidity_init()
+{
+	xLastWakeTime = xTaskGetTickCount();
+	xFrequency1 = pdMS_TO_TICKS(1); // 1 ms
+	xFrequency2 = pdMS_TO_TICKS(50); // 50 ms
+	xFrequency3 = pdMS_TO_TICKS(30000); // 30000 ms
+}
+
+void temperatureHumidity_run(void)
+{
+	printf("Temperature Task started\n");
 		
 		isProblem = false;
 		
@@ -96,20 +110,31 @@ void temperatureHumidity_task(void* pvParameters){
 		temperatureHumidity_wakeup();
 		vTaskDelay(xFrequency2);
 		
-		if (isProblem)
-			continue;
-		
-		//measure temperature
-		temperatureHumidity_measure();
-		vTaskDelay(xFrequency1);
-		
-		if (isProblem)
-			continue;
-		
-		//add latest temperature to the array
-		temperatureHumidity_getLatestTemperature();
-		temperatureHumidity_getLatestHumidity();
+		if (!isProblem)
+		{
+			//measure temperature
+			temperatureHumidity_measure();
+			vTaskDelay(xFrequency1);
+      
+			if (!isProblem)
+			{
+				//add latest temperature to the array
+				temperatureHumidity_getLatestTemperature();
+				temperatureHumidity_getLatestHumidity();
+			}
+		}
 		//wait 30 seconds for next measurement
 		xTaskDelayUntil(&xLastWakeTime, xFrequency3);
-	}
+}
+
+void temperatureHumidity_createTask()
+{
+	xTaskCreate(
+	temperatureHumidity_task
+	,  "temperatureHumidityTask"  // A name just for humans
+	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
+	,  NULL
+	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	,  NULL );
+
 }

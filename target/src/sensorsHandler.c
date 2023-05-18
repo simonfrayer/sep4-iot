@@ -18,13 +18,7 @@ void sensorsHandler_createSensors()
 	temperatureHumidity_create();
 	co2_create();
 	
-	xTaskCreate(
-	temperatureHumidity_task
-	,  "temperatureHumidityTask"  // A name just for humans
-	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
-	,  NULL
-	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-	,  NULL );
+	temperatureHumidity_createTask();
 
 	xTaskCreate(
 	co2_task
