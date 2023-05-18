@@ -24,12 +24,9 @@
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
+#include "./include/dataHandler.h"
 
 MessageBufferHandle_t downLinkMessageBuffer;
-
-// define semaphore handle
-SemaphoreHandle_t dataMutex;
-SemaphoreHandle_t limitMutex;
 
 // Prototype for LoRaWAN handler
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority);
@@ -37,28 +34,8 @@ void lora_handler_initialise(UBaseType_t lora_handler_task_priority);
 /*-----------------------------------------------------------*/
 void create_tasks_and_semaphores(void)
 {
-	// Semaphores are useful to stop a Task proceeding, where it should be paused to wait,
-	// because it is sharing a resource, such as the Serial port.
-	// Semaphores should only be used whilst the scheduler is running, but we can set it up here.
-	if (dataMutex == NULL )  // Check to confirm that the Semaphore has not already been created.
-	{
-		dataMutex = xSemaphoreCreateMutex();  // Create a mutex semaphore.
-		printf("dataMutex created\n");
-		if ( ( dataMutex ) != NULL )
-		{
-			xSemaphoreGive( dataMutex );  // Make the mutex available for use, by initially "Giving" the Semaphore.
-		}
-	}
-
-	if (limitMutex == NULL)
-	{
-		limitMutex = xSemaphoreCreateMutex();
-		printf("limitMutex created\n");
-		if((limitMutex) != NULL)
-		{
-			xSemaphoreGive( limitMutex);
-		}
-	}
+	//create mutex
+	dataHandler_createMutex();
 
 	xTaskCreate(
 	sensorsHandler_task

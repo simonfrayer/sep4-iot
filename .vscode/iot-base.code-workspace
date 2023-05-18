@@ -25,7 +25,8 @@
 			"compare": "c",
 			"chrono": "c",
 			"variant": "c",
-			"stdbool.h": "c"
+			"stdbool.h": "c",
+			"co2.h": "c"
 		}
 	}
 }
