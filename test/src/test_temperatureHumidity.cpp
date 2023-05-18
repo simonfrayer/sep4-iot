@@ -17,6 +17,7 @@ FAKE_VALUE_FUNC(hih8120_driverReturnCode_t, hih8120_wakeup);
 FAKE_VALUE_FUNC(hih8120_driverReturnCode_t, hih8120_measure);
 FAKE_VALUE_FUNC(uint16_t, hih8120_getHumidityPercent_x10);
 FAKE_VALUE_FUNC(int16_t, hih8120_getTemperature_x10);
+FAKE_VALUE_FUNC(int16_t, medianCalculator_calculateMedian, int16_t[], int);
 
 // Create Test fixture and Reset all Mocks before each test
 class Test_temperatureHumidity : public ::testing::Test
