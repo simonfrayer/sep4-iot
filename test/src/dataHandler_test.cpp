@@ -12,7 +12,12 @@ extern "C" {
 class DataHandlerTest : public::testing::Test{
     protected:
         void SetUp() override{
-            xSemaphoreTake(limitMutex, pdTRUE);
+            RESET_FAKE(xSemaphoreCreateMutex);
+            RESET_FAKE(xSemaphoreTake);
+            RESET_FAKE(xSemaphoreGive);
+            FFF_RESET_HISTORY();
+
+            // xSemaphoreTake(limitMutex, pdTRUE);
 
             //setting limits
             limit1 = 10;
@@ -22,18 +27,18 @@ class DataHandlerTest : public::testing::Test{
         void TearDown() override{
             limit1 = 0;
             limit2 = 0;
-            xSemaphoreGive(limitMutex);
+            //xSemaphoreGive(limitMutex);
         }
 
         // Helper method to initialize the mutex
-        void InitializeMutex() {
-            dataMutex = xSemaphoreCreateMutex();
-            limitMutex = xSemaphoreCreateMutex();
-        }
+        // void InitializeMutex() {
+        //     dataMutex = xSemaphoreCreateMutex();
+        //     limitMutex = xSemaphoreCreateMutex();
+        // }
 
-        // Semaphore handles
-        SemaphoreHandle_t dataMutex;
-        SemaphoreHandle_t limitMutex;
+        // // Semaphore handles
+        // SemaphoreHandle_t dataMutex;
+        // SemaphoreHandle_t limitMutex;
 
         int16_t limit1;
         int16_t limit2;
