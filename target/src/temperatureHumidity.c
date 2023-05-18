@@ -94,14 +94,14 @@ void temperatureHumidity_task(void* pvParameters){
 		
 		//wakeup the sensor
 		temperatureHumidity_wakeup();
-		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
+		vTaskDelay(xFrequency2);
 		
 		if (isProblem)
 			continue;
 		
 		//measure temperature
 		temperatureHumidity_measure();
-		xTaskDelayUntil(&xLastWakeTime, xFrequency1);
+		vTaskDelay(xFrequency1);
 		
 		if (isProblem)
 			continue;

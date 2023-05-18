@@ -25,6 +25,7 @@
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
 #include "./include/activationHandler.h"
+#include "./include/dataHandler.h"
 
 MessageBufferHandle_t downLinkMessageBuffer;
 
@@ -97,6 +98,9 @@ void initialiseSystem()
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();
+
+	//Set an initial limit for the servo
+	dataHandler_setLimits(10,15);
 
 	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialisation vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	// Status Leds driver

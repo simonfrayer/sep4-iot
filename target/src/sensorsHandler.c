@@ -47,18 +47,18 @@ void sensorsHandler_task(void* pvParameters)
 
 	for(;;)
 	{
-		printf("SensorHandler Task Started\n");
 		xTaskDelayUntil(&xLastWakeTime, xFrequency);
+		printf("SensorHandler Task Started\n");
 		
 		temperatureMedian = temperatureHumidity_getTemperatureMedian();
 
 		//Without the delay we experienced some undesired behaviour in hterm when printing
-		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
+		vTaskDelay(xFrequency2);
 
 		humidityMedian = temperatureHumidity_getHumidityMedian();
 
 		//Without the delay we experienced some undesired behaviour in hterm when printing
-		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
+		vTaskDelay(xFrequency2);
 
 		co2Median = co2_getCO2Median();
 
