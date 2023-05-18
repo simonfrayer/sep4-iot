@@ -18,7 +18,7 @@ void servo_turnOn()
 {
     position = 100;
     rc_servo_setPosition(servoNo, position);
-    printf("Servo is turned off!\n");
+    printf("Servo is turned on!\n");
 }
 
 void servo_turnOff()

@@ -47,7 +47,7 @@ void create_tasks_and_semaphores(void)
 	if (dataMutex == NULL )  // Check to confirm that the Semaphore has not already been created.
 	{
 		dataMutex = xSemaphoreCreateMutex();  // Create a mutex semaphore.
-		printf("dataMutex created\n");
+		//printf("dataMutex created\n");
 		if ( ( dataMutex ) != NULL )
 		{
 			xSemaphoreGive( dataMutex );  // Make the mutex available for use, by initially "Giving" the Semaphore.
@@ -57,7 +57,7 @@ void create_tasks_and_semaphores(void)
 	if (limitMutex == NULL)
 	{
 		limitMutex = xSemaphoreCreateMutex();
-		printf("limitMutex created\n");
+		//printf("limitMutex created\n");
 		if((limitMutex) != NULL)
 		{
 			xSemaphoreGive( limitMutex);

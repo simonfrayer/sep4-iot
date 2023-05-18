@@ -18,10 +18,10 @@ static bool isProblem = false;
 void temperatureHumidity_create(){
 	hih8120_driverReturnCode_t result = hih8120_initialise();
 	if(result != HIH8120_OK){
-		printf("Initialization of hih8120 failed!\n");
+		//printf("Initialization of hih8120 failed!\n");
 	}
 	else{
-		printf("Initialization of hih8120 was successful!\n");
+		//printf("Initialization of hih8120 was successful!\n");
 	}
 }
 
@@ -43,11 +43,11 @@ static void temperatureHumidity_measure(){
 	
 	if (result != HIH8120_OK)
 	{
-		printf("Measure of hih8120 failed!\n");
+		//printf("Measure of hih8120 failed!\n");
 		isProblem = true;
 	}
 	else{
-		printf("Measure of hih8120 was successful!\n");
+		//printf("Measure of hih8120 was successful!\n");
 	}
 }
 

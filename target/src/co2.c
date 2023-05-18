@@ -16,7 +16,7 @@ static bool isProblem;
 void co2_create(){
 	mh_z19_initialise(ser_USART3);
 
-	printf("Initialization of mh_z19 (CO2 sensor) was successful!\n");
+	//printf("Initialization of mh_z19 (CO2 sensor) was successful!\n");
 }
 
 static void co2_measure(){
@@ -24,11 +24,11 @@ static void co2_measure(){
 	
 	if (rc != MHZ19_OK)
 	{
-		printf("Measure of mh_z19 (CO2 sensor) failed!\n");
+		//printf("Measure of mh_z19 (CO2 sensor) failed!\n");
 		isProblem = true;
 	}
 	else{
-		printf("Measure of mh_z19 (CO2 sensor) was successful!\n");
+		//printf("Measure of mh_z19 (CO2 sensor) was successful!\n");
 	}
 }
 
@@ -39,8 +39,8 @@ static void co2_getLatestCO2(){
 
 	if (rc != MHZ19_OK)
 	{
-		printf("Getting of the measured mh_z19 (CO2 sensor) failed!\n");
-		printf("Returned value: %d", rc);
+		//printf("Getting of the measured mh_z19 (CO2 sensor) failed!\n");
+		//printf("Returned value: %d", rc);
 		isProblem = true;
 	}
 	else{
@@ -68,7 +68,7 @@ void co2_task(void* pvParameters){
 	//loop
 	for (;;)
 	{
-		printf("CO2 Task started\n");
+		//printf("CO2 Task started\n");
 		
 		isProblem = false;
 		

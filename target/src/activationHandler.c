@@ -42,7 +42,7 @@ void activationHandler_task(void* pvParameters)
 
 	for(;;)
 	{
-		printf("activationHandler Task Started\n");
+		//printf("activationHandler Task Started\n");
 		xTaskDelayUntil(&xLastWakeTime, xFrequency);
 		
 		struct MeasuredData data = dataHandler_getData();
