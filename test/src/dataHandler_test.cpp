@@ -1,18 +1,18 @@
 #include <gtest/gtest.h>
+#include "fff.h"
+#include "FreeRTOS_FFF_MocksDeclaration.h"
 
 extern "C" {
     #include <stdlib.h>
     #include <stdio.h>
     #include <stdint.h>
-    #include <semphr.h>
     #include "dataHandler.h"
 }
     
 class DataHandlerTest : public::testing::Test{
     protected:
         void SetUp() override{
-            //create mutex
-            dataHandler_createMutex();
+            xSemaphoreTake(limitMutex, pdTRUE);
 
             //setting limits
             limit1 = 10;
@@ -22,7 +22,18 @@ class DataHandlerTest : public::testing::Test{
         void TearDown() override{
             limit1 = 0;
             limit2 = 0;
+            xSemaphoreGive(limitMutex);
         }
+
+        // Helper method to initialize the mutex
+        void InitializeMutex() {
+            dataMutex = xSemaphoreCreateMutex();
+            limitMutex = xSemaphoreCreateMutex();
+        }
+
+        // Semaphore handles
+        SemaphoreHandle_t dataMutex;
+        SemaphoreHandle_t limitMutex;
 
         int16_t limit1;
         int16_t limit2;
