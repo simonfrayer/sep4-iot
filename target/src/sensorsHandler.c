@@ -30,13 +30,13 @@ void sensorsHandler_init()
 {
 	
 	xLastWakeTime = xTaskGetTickCount();
-	xFrequency = 15000/portTICK_PERIOD_MS; // 150000 ms = 2.5 mins
-	xFrequency2 = 300/portTICK_PERIOD_MS; // 300 ms
+	xFrequency = pdMS_TO_TICKS(15000); // 150000 ms = 2.5 mins
+	xFrequency2 = pdMS_TO_TICKS(300); // 300 ms
 }
 
-	for(;;)
-	{
-		xTaskDelayUntil(&xLastWakeTime, xFrequency);
+void sensorsHandler_run()
+{
+	xTaskDelayUntil(&xLastWakeTime, xFrequency);
 		printf("SensorHandler Task Started\n");
 		
 	temperatureMedian = temperatureHumidity_getTemperatureMedian();

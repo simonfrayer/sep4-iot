@@ -62,8 +62,8 @@ static void co2_task(void* pvParameters){
 	
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t xFrequency1 = 300/portTICK_PERIOD_MS; // 300 ms
-	const TickType_t xFrequency2 = 30000/portTICK_PERIOD_MS; // 30000 ms
+	const TickType_t xFrequency1 = pdMS_TO_TICKS(300); // 300 ms
+	const TickType_t xFrequency2 = pdMS_TO_TICKS(30000); // 30000 ms
 
 	//loop
 	for (;;)

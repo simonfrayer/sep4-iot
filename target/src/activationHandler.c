@@ -38,7 +38,7 @@ void activationHandler_task(void* pvParameters)
 	
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t xFrequency = 150000/portTICK_PERIOD_MS; // 150000 ms = 2.5 mins
+	const TickType_t xFrequency = pdMS_TO_TICKS(150000); // 150000 ms = 2.5 mins
 
 	for(;;)
 	{
