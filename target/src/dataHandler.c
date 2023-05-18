@@ -8,8 +8,9 @@
 static struct MeasuredData measuredData;
 static struct Limits limits;
 
-extern SemaphoreHandle_t dataMutex;
-extern SemaphoreHandle_t limitMutex;
+// define semaphore handle
+SemaphoreHandle_t dataMutex;
+SemaphoreHandle_t limitMutex;
 
 struct MeasuredData dataHandler_getData()
 {
@@ -48,7 +49,27 @@ struct Limits dataHandler_getLimits()
 	return data;
 }
 
+void dataHandler_createMutex(){
+    if (dataMutex == NULL )  // Check to confirm that the Semaphore has not already been created.
+	{
+		dataMutex = xSemaphoreCreateMutex();  // Create a mutex semaphore.
+		printf("dataMutex created\n");
+		if ( ( dataMutex ) != NULL )
+		{
+			xSemaphoreGive( dataMutex );  // Make the mutex available for use, by initially "Giving" the Semaphore.
+		}
+	}
 
+	if (limitMutex == NULL)
+	{
+		limitMutex = xSemaphoreCreateMutex();
+		printf("limitMutex created\n");
+		if((limitMutex) != NULL)
+		{
+			xSemaphoreGive( limitMutex);
+		}
+	}
+}
 
 void dataHandler_setTemperature(int16_t sensorTemperature)
 {

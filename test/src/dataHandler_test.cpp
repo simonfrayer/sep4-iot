@@ -4,10 +4,9 @@ extern "C" {
     #include <stdlib.h>
     #include <stdio.h>
     #include <stdint.h>
-    #include <semphr.h>
     #include "dataHandler.h"
 }
-
+    
 class DataHandlerTest : public::testing::Test{
     protected:
         void SetUp() override{
@@ -24,7 +23,6 @@ class DataHandlerTest : public::testing::Test{
 
 TEST_F(DataHandlerTest, GetLimits) {
     //Arrange
-    SemaphoreHandle_t dataMutex;
     static struct Limits limits;
     //Act
     limits = dataHandler_getLimits();
