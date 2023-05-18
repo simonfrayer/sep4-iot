@@ -4,4 +4,4 @@
 
 
 void sensorsHandler_createSensors();
-void sensorsHandler_taskCreate();
+void sensorsHandler_createTask();

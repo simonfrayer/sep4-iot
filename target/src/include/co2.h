@@ -11,4 +11,4 @@
 
 void co2_create();
 int16_t co2_getCO2Median();
-void co2_taskCreate();
+void co2_createTask();

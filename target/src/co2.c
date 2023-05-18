@@ -86,7 +86,7 @@ static void co2_task(void* pvParameters){
 	}
 }
 
-void co2_taskCreate()
+void co2_createTask()
 {
 	xTaskCreate(
 	co2_task

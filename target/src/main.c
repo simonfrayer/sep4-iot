@@ -60,7 +60,7 @@ void create_tasks_and_semaphores(void)
 		}
 	}
 
-	sensorsHandler_taskCreate();
+	sensorsHandler_createTask();
 }
 
 /*-----------------------------------------------------------*/

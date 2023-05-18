@@ -20,7 +20,7 @@ void sensorsHandler_createSensors()
 	
 	temperatureHumidity_createTask();
 
-	co2_taskCreate();
+	co2_createTask();
 }
 
 static void sensorsHandler_task(void* pvParameters)
@@ -56,7 +56,7 @@ static void sensorsHandler_task(void* pvParameters)
 	}
 }
 
-void sensorsHandler_taskCreate()
+void sensorsHandler_createTask()
 {
 	xTaskCreate(
 	sensorsHandler_task
