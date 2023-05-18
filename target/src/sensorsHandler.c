@@ -12,6 +12,9 @@
 static int16_t temperatureMedian;
 static int16_t humidityMedian;
 static int16_t co2Median;
+static TickType_t xLastWakeTime;
+static TickType_t xFrequency;
+static TickType_t xFrequency2;
 
 void sensorsHandler_createSensors()
 {
@@ -23,36 +26,46 @@ void sensorsHandler_createSensors()
 	co2_createTask();
 }
 
+void sensorsHandler_init()
+{
+	
+	xLastWakeTime = xTaskGetTickCount();
+	xFrequency = 15000/portTICK_PERIOD_MS; // 150000 ms = 2.5 mins
+	xFrequency2 = 300/portTICK_PERIOD_MS; // 300 ms
+}
+
+void sensorsHandler_run()
+{
+	printf("SensorHandler Task Started\n");
+	xTaskDelayUntil(&xLastWakeTime, xFrequency);
+		
+	temperatureMedian = temperatureHumidity_getTemperatureMedian();
+
+	//Without the delay we experienced some undesired behaviour in hterm when printing
+	xTaskDelayUntil(&xLastWakeTime, xFrequency2);
+
+	humidityMedian = temperatureHumidity_getHumidityMedian();
+
+	//Without the delay we experienced some undesired behaviour in hterm when printing
+	xTaskDelayUntil(&xLastWakeTime, xFrequency2);
+
+	co2Median = co2_getCO2Median();
+
+	dataHandler_setTemperature(temperatureMedian);
+	dataHandler_setHumidity(humidityMedian);
+	dataHandler_setCO2(co2Median);
+}
+
 static void sensorsHandler_task(void* pvParameters)
 {
 	// Remove compiler warnings
 	(void)pvParameters;
-	
-	TickType_t xLastWakeTime;
-	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t xFrequency = 15000/portTICK_PERIOD_MS; // 150000 ms = 2.5 mins
-	const TickType_t xFrequency2 = 300/portTICK_PERIOD_MS; // 300 ms
+
+	sensorsHandler_init();
 
 	for(;;)
 	{
-		printf("SensorHandler Task Started\n");
-		xTaskDelayUntil(&xLastWakeTime, xFrequency);
-		
-		temperatureMedian = temperatureHumidity_getTemperatureMedian();
-
-		//Without the delay we experienced some undesired behaviour in hterm when printing
-		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
-
-		humidityMedian = temperatureHumidity_getHumidityMedian();
-
-		//Without the delay we experienced some undesired behaviour in hterm when printing
-		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
-
-		co2Median = co2_getCO2Median();
-
-		dataHandler_setTemperature(temperatureMedian);
-		dataHandler_setHumidity(humidityMedian);
-		dataHandler_setCO2(co2Median);
+		sensorsHandler_run();
 	}
 }
 
