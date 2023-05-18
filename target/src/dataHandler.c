@@ -45,6 +45,7 @@ struct Limits dataHandler_getLimits()
 			printf("TIMEOUT: limit mutex\n");
 		}
 	}
+	printf("Getting limits\n");
 	return data;
 }
 
