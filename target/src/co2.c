@@ -16,7 +16,7 @@ static bool isProblem;
 void co2_create(){
 	mh_z19_initialise(ser_USART3);
 
-	printf("Initialization of mh_z19 (CO2 sensor) was successful!\n");
+	//printf("Initialization of mh_z19 (CO2 sensor) was successful!\n");
 }
 
 static void co2_measure(){
@@ -24,11 +24,11 @@ static void co2_measure(){
 	
 	if (rc != MHZ19_OK)
 	{
-		printf("Measure of mh_z19 (CO2 sensor) failed!\n");
+		//printf("Measure of mh_z19 (CO2 sensor) failed!\n");
 		isProblem = true;
 	}
 	else{
-		printf("Measure of mh_z19 (CO2 sensor) was successful!\n");
+		//printf("Measure of mh_z19 (CO2 sensor) was successful!\n");
 	}
 }
 
@@ -39,8 +39,8 @@ static void co2_getLatestCO2(){
 
 	if (rc != MHZ19_OK)
 	{
-		printf("Getting of the measured mh_z19 (CO2 sensor) failed!\n");
-		printf("Returned value: %d", rc);
+		//printf("Getting of the measured mh_z19 (CO2 sensor) failed!\n");
+		//printf("Returned value: %d", rc);
 		isProblem = true;
 	}
 	else{
@@ -56,19 +56,19 @@ int16_t co2_getCO2Median()
 	return medianCalculator_calculateMedian(co2s, 10);
 }
 
-void co2_task(void* pvParameters){
+static void co2_task(void* pvParameters){
 	// Remove compiler warnings
 	(void)pvParameters;
 	
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t xFrequency1 = 300/portTICK_PERIOD_MS; // 300 ms
-	const TickType_t xFrequency2 = 30000/portTICK_PERIOD_MS; // 30000 ms
+	const TickType_t xFrequency1 = pdMS_TO_TICKS(300); // 300 ms
+	const TickType_t xFrequency2 = pdMS_TO_TICKS(30000); // 30000 ms
 
 	//loop
 	for (;;)
 	{
-		printf("CO2 Task started\n");
+		//printf("CO2 Task started\n");
 		
 		isProblem = false;
 		
@@ -84,4 +84,15 @@ void co2_task(void* pvParameters){
 		//wait 30 seconds for next measurement
 		xTaskDelayUntil(&xLastWakeTime, xFrequency2);
 	}
+}
+
+void co2_createTask()
+{
+	xTaskCreate(
+	co2_task
+	,  "co2Task"  // A name just for humans
+	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
+	,  NULL
+	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
+	,  NULL );
 }

@@ -23,12 +23,12 @@ static TickType_t xLastWakeTime;
 void temperatureHumidity_create(){
 	hih8120_driverReturnCode_t result = hih8120_initialise();
 	if(result != HIH8120_OK){
-		printf("Initialization of hih8120 failed!\n");
 		isSensorInitialized = false;
+		//printf("Initialization of hih8120 failed!\n");
 	}
 	else{
 		isSensorInitialized = true;
-		printf("Initialization of hih8120 was successful!\n");
+		//printf("Initialization of hih8120 was successful!\n");
 	}
 }
 
@@ -50,11 +50,11 @@ static void temperatureHumidity_measure(){
 	
 	if (result != HIH8120_OK)
 	{
-		printf("Measure of hih8120 failed!\n");
+		//printf("Measure of hih8120 failed!\n");
 		isProblem = true;
 	}
 	else{
-		printf("Measure of hih8120 was successful!\n");
+		//printf("Measure of hih8120 was successful!\n");
 	}
 }
 
@@ -118,7 +118,7 @@ void temperatureHumidity_run(void)
 			//measure temperature
 			temperatureHumidity_measure();
 			vTaskDelay(xFrequency1);
-		
+      
 			if (!isProblem)
 			{
 				//add latest temperature to the array
@@ -126,7 +126,6 @@ void temperatureHumidity_run(void)
 				temperatureHumidity_getLatestHumidity();
 			}
 		}
-		
 		//wait 30 seconds for next measurement
 		xTaskDelayUntil(&xLastWakeTime, xFrequency3);
 }

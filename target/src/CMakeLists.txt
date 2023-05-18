@@ -7,4 +7,6 @@ target_sources(
     temperatureHumidity.c
     co2.c
     medianCalculator.c
+    activationHandler.c
+    servo.c
 )
