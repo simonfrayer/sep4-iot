@@ -1,7 +1,7 @@
 target_sources(
     ${PROJECT_NAME} 
     PRIVATE
-    test_sensorsHandler.cpp
+    test_temperatureHumidity.cpp
     ../../include/FreeRTOS_FFF_MocksDefinitions.cpp
-    ../../../target/src/sensorsHandler.c
+    ../../../target/src/temperatureHumidity.c
 )

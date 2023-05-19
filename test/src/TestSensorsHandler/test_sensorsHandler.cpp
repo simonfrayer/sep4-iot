@@ -10,6 +10,7 @@ extern "C"
 	#include "temperatureHumidity.h"
 	#include "sensorsHandler.h"
 	#include "co2.h"
+	#include "medianCalculator.h"
 }
 
 //--- Create Mocks---

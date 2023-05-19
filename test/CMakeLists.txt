@@ -34,6 +34,7 @@ include_directories(
     ""
   )
 
+
 add_subdirectory(src)
 
 target_link_libraries(
@@ -41,4 +42,4 @@ target_link_libraries(
   GTest::gtest_main
 )
 
-gtest_discover_tests(${PROJECT_NAME})
+gtest_discover_tests(${PROJECT_NAME} ${Tests})
