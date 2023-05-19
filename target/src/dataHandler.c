@@ -34,22 +34,22 @@ void dataHandler_createMutex(){
 	}
 }
 
-struct MeasuredData dataHandler_getData()
+void dataHandler_setLimits(int16_t minLimit, int16_t maxLimit) 
 {
-	struct MeasuredData data;		
+	if(limitMutex != NULL)
+	{
+		BaseType_t result = xSemaphoreTake(limitMutex, (TickType_t)10);
 
-	if(dataMutex != NULL)
+		if(result == pdTRUE)
 		{
-			if (xSemaphoreTake(dataMutex, (TickType_t)10) == pdTRUE)
-				{
-				printf("Data mutex taken\n");
-				data = measuredData;
-				xSemaphoreGive(dataMutex);
-				printf("Data mutex given\n");
-				}
-				
+				limits.minLimit = minLimit;
+				limits.maxLimit = maxLimit;
+				printf("***SetLimits Called***\n minLimit: %d\n maxLimit: %d\n", minLimit, maxLimit);
+				xSemaphoreGive(limitMutex);
+				printf("Limit mutex free\n");
 		}
-		return data;
+	}
+
 }
 
 struct Limits dataHandler_getLimits()
@@ -58,7 +58,9 @@ struct Limits dataHandler_getLimits()
 	
 	if(limitMutex != NULL)
 	{
-		if(xSemaphoreTake(limitMutex, (TickType_t)10) == pdTRUE)
+		BaseType_t result = xSemaphoreTake(limitMutex, (TickType_t)10);
+
+		if(result == pdTRUE)
 		{
 			data = limits;
 			xSemaphoreGive(limitMutex);
@@ -122,18 +124,20 @@ void dataHandler_setCO2(int16_t sensorCO2)
 			}
 }
 
-void dataHandler_setLimits(int16_t minLimit, int16_t maxLimit) 
+struct MeasuredData dataHandler_getData()
 {
-	if(limitMutex != NULL)
-	{
-		if(xSemaphoreTake(limitMutex, (TickType_t)10) == pdTRUE)
-		{
-				limits.minLimit = minLimit;
-				limits.maxLimit = maxLimit;
-				printf("***SetLimits Called***\n minLimit: %d\n maxLimit: %d\n", minLimit, maxLimit);
-				xSemaphoreGive(limitMutex);
-				printf("Limit mutex free\n");
-		}
-	}
+	struct MeasuredData data;		
 
+	if(dataMutex != NULL)
+		{
+			if (xSemaphoreTake(dataMutex, (TickType_t)10) == pdTRUE)
+				{
+				printf("Data mutex taken\n");
+				data = measuredData;
+				xSemaphoreGive(dataMutex);
+				printf("Data mutex given\n");
+				}
+				
+		}
+		return data;
 }

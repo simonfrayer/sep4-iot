@@ -7,38 +7,32 @@ extern "C" {
     #include <stdio.h>
     #include <stdint.h>
     #include "dataHandler.h"
+
+    // // Semaphore handles
+        extern SemaphoreHandle_t dataMutex;
+        extern SemaphoreHandle_t limitMutex;
 }
     
 class DataHandlerTest : public::testing::Test{
     protected:
         void SetUp() override{
             RESET_FAKE(xSemaphoreCreateMutex);
+            limitMutex = (SemaphoreHandle_t)1;
+            dataMutex = (SemaphoreHandle_t)1;
             RESET_FAKE(xSemaphoreTake);
             RESET_FAKE(xSemaphoreGive);
             FFF_RESET_HISTORY();
 
-            // xSemaphoreTake(limitMutex, pdTRUE);
-
             //setting limits
             limit1 = 10;
             limit2 = 30;
+            xSemaphoreGive(limitMutex);
             dataHandler_setLimits(limit1, limit2);
         }
         void TearDown() override{
             limit1 = 0;
             limit2 = 0;
-            //xSemaphoreGive(limitMutex);
         }
-
-        // Helper method to initialize the mutex
-        // void InitializeMutex() {
-        //     dataMutex = xSemaphoreCreateMutex();
-        //     limitMutex = xSemaphoreCreateMutex();
-        // }
-
-        // // Semaphore handles
-        // SemaphoreHandle_t dataMutex;
-        // SemaphoreHandle_t limitMutex;
 
         int16_t limit1;
         int16_t limit2;
