@@ -38,9 +38,9 @@ void dataHandler_setLimits(int16_t minLimit, int16_t maxLimit)
 {
 	if(limitMutex != NULL)
 	{
-		BaseType_t result = xSemaphoreTake(limitMutex, (TickType_t)10);
+		BaseType_t isMutexFree = xSemaphoreTake(limitMutex, (TickType_t)10);
 
-		if(result == pdTRUE)
+		if(isMutexFree == pdTRUE)
 		{
 				limits.minLimit = minLimit;
 				limits.maxLimit = maxLimit;
