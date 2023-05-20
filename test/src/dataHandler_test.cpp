@@ -18,15 +18,16 @@ class DataHandlerTest : public::testing::Test{
         void SetUp() override{
             limitMutex = (SemaphoreHandle_t)1;
             dataMutex = (SemaphoreHandle_t)1;
+
             RESET_FAKE(xSemaphoreTake);
             FFF_RESET_HISTORY();
+
+            //set the return value of xSemaphoreTake to 1
+            xSemaphoreTake_fake.return_val = 1;
 
             //setting limits
             limit1 = 10;
             limit2 = 30;
-
-            //set the return value of xSemaphoreTake to 1
-            xSemaphoreTake_fake.return_val = 1;
             dataHandler_setLimits(limit1, limit2);
 
             //setting temperature
@@ -50,9 +51,6 @@ TEST_F(DataHandlerTest, SetLimits) {
     //Act
     dataHandler_setLimits(limit1, limit2);
     //Assert
-    EXPECT_NO_THROW({
-        dataHandler_setLimits(limit1, limit2);
-    });
     EXPECT_EQ(dataHandler_getLimits().minLimit, limit1);
     EXPECT_EQ(dataHandler_getLimits().maxLimit, limit2);
 
@@ -66,9 +64,6 @@ TEST_F(DataHandlerTest, TrySetLimitsWithTakenMutex) {
     xSemaphoreTake_fake.return_val = 0;
     dataHandler_setLimits(limit1, limit2);
     //Assert
-    EXPECT_NO_THROW({
-        dataHandler_setLimits(limit1, limit2);
-    });
     EXPECT_FALSE(dataHandler_getLimits().minLimit == limit1);
     EXPECT_FALSE(dataHandler_getLimits().maxLimit == limit2);
 
@@ -102,4 +97,14 @@ TEST_F(DataHandlerTest, GetTemperature) {
     data = dataHandler_getData();
     //Assert
     EXPECT_EQ(data.temperature, temperature);
+}
+
+TEST_F(DataHandlerTest, TryGetTemperatureTakenMutex) {
+    //Arrange
+    static struct MeasuredData data;
+    //Act
+    xSemaphoreTake_fake.return_val = 0;
+    data = dataHandler_getData();
+    //Assert
+    EXPECT_FALSE(data.temperature == temperature);
 }
