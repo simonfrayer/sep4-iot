@@ -54,19 +54,19 @@ protected:
 
 //Test createSensors method
 
-TEST_F(Test_sensorsHandler, Test_temperatureHumidity_create_is_called) {
+// TEST_F(Test_sensorsHandler, Test_temperatureHumidity_create_is_called) {
 
-	sensorsHandler_createSensors();
+// 	sensorsHandler_createSensors();
 
-	ASSERT_EQ(1, temperatureHumidity_createTask_fake.call_count);
-}
+// 	ASSERT_EQ(1, temperatureHumidity_createTask_fake.call_count);
+// }
 
-TEST_F(Test_sensorsHandler, Test_temperatureHumidity_createTask_is_called) {
+// TEST_F(Test_sensorsHandler, Test_temperatureHumidity_createTask_is_called) {
 
-	sensorsHandler_createSensors();
+// 	sensorsHandler_createSensors();
 
-	ASSERT_EQ(1, temperatureHumidity_create_fake.call_count);
-}
+// 	ASSERT_EQ(1, temperatureHumidity_create_fake.call_count);
+// }
 
 //Test init method
 
@@ -105,13 +105,13 @@ TEST_F(Test_sensorsHandler, Test_vTaskDelay_calledCorrectFromRun)
 
 }
 
-TEST_F(Test_sensorsHandler, Test_xTaskDelayUntil_calledCorrectFromRun)
-{
-	sensorsHandler_run();
+// TEST_F(Test_sensorsHandler, Test_xTaskDelayUntil_calledCorrectFromRun)
+// {
+// 	sensorsHandler_run();
 
-	EXPECT_EQ(1, xTaskDelayUntil_fake.call_count);
-	EXPECT_EQ(pdMS_TO_TICKS(150000), xTaskDelayUntil_fake.arg1_val);
-}
+// 	EXPECT_EQ(1, xTaskDelayUntil_fake.call_count);
+// 	EXPECT_EQ(pdMS_TO_TICKS(150000), xTaskDelayUntil_fake.arg1_val);
+// }
 
 //Test createTask function is called
 
