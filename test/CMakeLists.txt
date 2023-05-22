@@ -30,4 +30,8 @@ include_directories(
   
 add_subdirectory(src)
 
-
+add_custom_target(run_tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --verbose
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Running tests"
+)
