@@ -8,7 +8,7 @@ rm -rf build test_result.xml ../test_result.xml
 
 ls build  # Print the contents of the build directory
 ./build/TestTemperatureHumidity --gtest_output="xml:temp.xml"
-# sed 's/\/workspaces\/iot-base\///g' < temp.xml > ../test_result.xml
-# rm temp.xml
+sed 's/\/workspaces\/iot-base\///g' < temp.xml > ../test_result.xml
+rm temp.xml
 #ctest --output-junit ../test_result.xml --test-dir build
 exit 0
