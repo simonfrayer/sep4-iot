@@ -20,7 +20,6 @@ static TickType_t xFrequency3;
 static TickType_t xLastWakeTime;
 
 bool temperatureHumidity_create(){
-
 	hih8120_driverReturnCode_t result = hih8120_initialise();
 
 	if(result != HIH8120_OK)
@@ -28,9 +27,7 @@ bool temperatureHumidity_create(){
 		//printf("Initialization of hih8120 failed!\n");
 		return false;
 	}
-
-	else 
-	{
+	else{
 		//printf("Initialization of hih8120 was successful!\n");
 		return true;
 	}
