@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "FreeRTOS_FFF_MocksDeclaration.h"
 #include "fff.h"
+#include "stdbool.h"
 
 // Include interfaces and define global variables
 // defined by the production code
@@ -14,7 +15,7 @@ extern "C"
 }
 
 //--- Create Mocks---
-FAKE_VOID_FUNC(temperatureHumidity_create);
+FAKE_VALUE_FUNC(bool, temperatureHumidity_create);
 FAKE_VOID_FUNC(temperatureHumidity_createTask);
 FAKE_VALUE_FUNC(int16_t, temperatureHumidity_getTemperatureMedian);
 FAKE_VALUE_FUNC(int16_t, temperatureHumidity_getHumidityMedian);

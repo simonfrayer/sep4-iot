@@ -1,3 +1,4 @@
-add_subdirectory(Tests)
+
+add_subdirectory(TestMedianCalculator)
 add_subdirectory(TestSensorsHandler)
 add_subdirectory(TestTemperatureHumidity)
