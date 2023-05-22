@@ -6,7 +6,7 @@
 
 
 // compare method for the quicksort
-static int16_t medianCalculator_compare(const void *a, const void *b)
+static int medianCalculator_compare(const void *a, const void *b)
 {
     return (*(int16_t *)a - *(int16_t *)b);
 }
@@ -15,7 +15,7 @@ static int16_t medianCalculator_compare(const void *a, const void *b)
 // it could be liner with the use of a heap
 int16_t medianCalculator_calculateMedian(int16_t arr[], int size)
 {
-    	printf("Getting median\n");
+    	//printf("Getting median\n");
 
 	// make a copy of co2s
 	int16_t arrayCopy[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
@@ -43,7 +43,7 @@ int16_t medianCalculator_calculateMedian(int16_t arr[], int size)
 		}
 	}
 
-	printf("Amount of errors: %d\n", amountOfErrors);
+	//printf("Amount of errors: %d\n", amountOfErrors);
 
 	// get the median
 	if (amountOfErrors == 10)
@@ -62,6 +62,6 @@ int16_t medianCalculator_calculateMedian(int16_t arr[], int size)
 
 	// if even number of errors
 	// return the average of the two middle elements
-	printf("The two middle elements are: %d and %d\n", arrayCopy[(10 + amountOfErrors) / 2 - 1], arrayCopy[(10 + amountOfErrors) / 2]);
+	//printf("The two middle elements are: %d and %d\n", arrayCopy[(10 + amountOfErrors) / 2 - 1], arrayCopy[(10 + amountOfErrors) / 2]);
 	return (arrayCopy[(10 + amountOfErrors) / 2 - 1] + arrayCopy[(10 + amountOfErrors) / 2]) / 2;
 }

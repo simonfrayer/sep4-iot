@@ -24,11 +24,16 @@
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
+#include "./include/activationHandler.h"
+#include "./include/dataHandler.h"
 
 MessageBufferHandle_t downLinkMessageBuffer;
 
+
+
 // define semaphore handle
-SemaphoreHandle_t xTestSemaphore;
+SemaphoreHandle_t dataMutex;
+SemaphoreHandle_t limitMutex;
 
 // Prototype for LoRaWAN handler
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority);
@@ -39,22 +44,29 @@ void create_tasks_and_semaphores(void)
 	// Semaphores are useful to stop a Task proceeding, where it should be paused to wait,
 	// because it is sharing a resource, such as the Serial port.
 	// Semaphores should only be used whilst the scheduler is running, but we can set it up here.
-	if ( xTestSemaphore == NULL )  // Check to confirm that the Semaphore has not already been created.
+	if (dataMutex == NULL )  // Check to confirm that the Semaphore has not already been created.
 	{
-		xTestSemaphore = xSemaphoreCreateMutex();  // Create a mutex semaphore.
-		if ( ( xTestSemaphore ) != NULL )
+		dataMutex = xSemaphoreCreateMutex();  // Create a mutex semaphore.
+		//printf("dataMutex created\n");
+		if ( ( dataMutex ) != NULL )
 		{
-			xSemaphoreGive( ( xTestSemaphore ) );  // Make the mutex available for use, by initially "Giving" the Semaphore.
+			xSemaphoreGive( dataMutex );  // Make the mutex available for use, by initially "Giving" the Semaphore.
 		}
 	}
 
-	xTaskCreate(
-	sensorsHandler_task
-	,  "sensorHandlerTask"  // A name just for humans
-	,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
-	,  NULL
-	,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
-	,  NULL );
+	if (limitMutex == NULL)
+	{
+		limitMutex = xSemaphoreCreateMutex();
+		//printf("limitMutex created\n");
+		if((limitMutex) != NULL)
+		{
+			xSemaphoreGive( limitMutex);
+		}
+	}
+
+	sensorsHandler_createTask();
+
+	activationHandler_createTask();
 }
 
 /*-----------------------------------------------------------*/
@@ -66,11 +78,17 @@ void initialiseSystem()
 	// Make it possible to use stdio on COM port 0 (USB) on Arduino board - Setting 57600,8,N,1
 	stdio_initialise(ser_USART0);
 	
-	//initialize temperature sensor
+	//initialize temperature,humidity,co2 sensors
 	sensorsHandler_createSensors(); 
+
+	//initialize servo
+	activationHandler_createServo(); 
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();
+
+	//Set an initial limit for the servo
+	dataHandler_setLimits(10,15);
 
 	// vvvvvvvvvvvvvvvvv BELOW IS LoRaWAN initialisation vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 	// Status Leds driver
