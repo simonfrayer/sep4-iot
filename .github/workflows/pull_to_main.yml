@@ -7,7 +7,7 @@ on:
     branches:
       - main
       - dev
-      - test
+      - test/test
 
 jobs:
 
