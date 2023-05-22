@@ -11,5 +11,5 @@ target_sources(
     ../../target/src/include/medianCalculator.h
     ../../target/src/medianCalculator.c
     ../../target/src/include/servo.h
-    ../../target/src/servo.c
+    # ../../target/src/servo.c
 )
