@@ -1,6 +1,5 @@
 
 add_subdirectory(TestMedianCalculator)
 add_subdirectory(TestSensorsHandler)
-add_subdirectory(TestTemperatureHumidity)
 add_subdirectory(TestServo)
 add_subdirectory(TestActivationHandler)
