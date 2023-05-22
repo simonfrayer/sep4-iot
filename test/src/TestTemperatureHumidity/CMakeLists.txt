@@ -1,5 +1,5 @@
 target_sources(
-    ${PROJECT_NAME} 
+    #${PROJECT_NAME} 
     PRIVATE
     test_temperatureHumidity.cpp
     ../../include/FreeRTOS_FFF_MocksDefinitions.cpp

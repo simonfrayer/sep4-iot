@@ -18,6 +18,30 @@ static TickType_t xFrequency2;
 
 void sensorsHandler_createSensors()
 {
+
+	int maxIntializeTriesLeft = 5;
+
+	hih8120_driverReturnCode_t result; 
+	
+	do{
+		result =  hih8120_initialise();
+		//printf("Initialize TriesLeft:%d >%d<\n", maxIntializeTriesLeft, result);
+
+		if(result != HIH8120_OK)
+		{
+			isSensorInitialized = false;
+			//printf("Initialization of hih8120 failed!\n");
+
+			vTaskDelay(pdMS_TO_TICKS(5000UL));
+		}
+		else
+		{
+			isSensorInitialized = true;
+			//printf("Initialization of hih8120 was successful!\n");
+			break;
+		}
+	} while(--maxIntializeTriesLeft);
+	
 	temperatureHumidity_create();
 	co2_create();
 	
