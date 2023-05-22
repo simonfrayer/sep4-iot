@@ -28,17 +28,6 @@ include_directories(
   ../target/src/include
   )
   
-  
-  add_executable(
-    ${PROJECT_NAME}
-    ""
-  )
-
 add_subdirectory(src)
 
-target_link_libraries(
-  ${PROJECT_NAME}
-  GTest::gtest_main
-)
 
-gtest_discover_tests(  ${PROJECT_NAME})
