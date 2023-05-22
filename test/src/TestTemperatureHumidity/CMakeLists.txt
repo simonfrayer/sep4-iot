@@ -40,4 +40,4 @@ target_sources(
   ../../include/FreeRTOS_FFF_MocksDefinitions.cpp
   ../../../target/src/temperatureHumidity.c
 )
-  
+
