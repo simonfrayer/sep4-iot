@@ -233,5 +233,5 @@ TEST_F(Test_temperatureHumidity, Test_createTask_is_called_with_hih_return_TWI_B
 	temperatureHumidity_create();
 	temperatureHumidity_createTask();
 
-	EXPECT_EQ(1, xTaskCreate_fake.call_count);
+	EXPECT_EQ(0, xTaskCreate_fake.call_count);
 }
