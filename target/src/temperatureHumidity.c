@@ -14,21 +14,20 @@ static int indexOfLatestTemperature = 0;
 static int16_t humidities[10] = {-404, -404, -404, -404, -404, -404, -404, -404, -404, -404};
 static int indexOfLatestHumidity = 0;
 static bool isProblem = false;
-static bool isSensorInitialized = false;
 static TickType_t xFrequency1;
 static TickType_t xFrequency2;
 static TickType_t xFrequency3;
 static TickType_t xLastWakeTime;
 
-void temperatureHumidity_create(){
+bool temperatureHumidity_create(){
 	hih8120_driverReturnCode_t result = hih8120_initialise();
 	if(result != HIH8120_OK){
-		isSensorInitialized = false;
 		//printf("Initialization of hih8120 failed!\n");
+		return false;
 	}
 	else{
-		isSensorInitialized = true;
 		//printf("Initialization of hih8120 was successful!\n");
+		return true;
 	}
 }
 
@@ -132,14 +131,11 @@ void temperatureHumidity_run(void)
 
 void temperatureHumidity_createTask()
 {
-	if(isSensorInitialized)
-	{
-		xTaskCreate(
+	xTaskCreate(
 		temperatureHumidity_task
 		,  "temperatureHumidityTask"  // A name just for humans
 		,  configMINIMAL_STACK_SIZE  // This stack size can be checked & adjusted by reading the Stack Highwater
 		,  NULL
 		,  2  // Priority, with 3 (configMAX_PRIORITIES - 1) being the highest, and 0 being the lowest.
 		,  NULL );
-	}
 }
