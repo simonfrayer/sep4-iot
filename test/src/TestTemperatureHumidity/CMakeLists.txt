@@ -1,11 +1,43 @@
-add_executable(TestTemperatureHumidity "")
+cmake_minimum_required(VERSION 3.14)
+project(TestTemperatureHumidity)
+
+# GoogleTest requires at least C++14
+set(CMAKE_CXX_STANDARD 14)
+
+set(CMAKE_VERBOSE_MAKEFILE TRUE)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
+enable_testing()
+
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+include(GoogleTest)
+
+
+include_directories(
+  ./include
+  ../target/drivers/include
+  ../target/src/include
+  )
+
+add_executable(
+  ${TestTemperatureHumidity}
+""
+)
+
 target_sources(
-  TestTemperatureHumidity
+  ${TestTemperatureHumidity}
   PRIVATE
   test_temperatureHumidity.cpp
   ../../include/FreeRTOS_FFF_MocksDefinitions.cpp
   ../../../target/src/temperatureHumidity.c
 )
-target_link_libraries(TestTemperatureHumidity GTest::gtest_main)
-
-gtest_discover_tests(TestTemperatureHumidity)
+  

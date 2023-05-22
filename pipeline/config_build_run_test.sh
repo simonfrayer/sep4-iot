@@ -7,7 +7,7 @@ rm -rf build test_result.xml ../test_result.xml
 /usr/bin/cmake --build build --config Debug --target all --
 
 ls build  # Print the contents of the build directory
-./build/iot_base_test --gtest_output="xml:temp.xml"
+./build/TestTemperatureHumidity --gtest_output="xml:temp.xml"
 sed 's/\/workspaces\/iot-base\///g' < temp.xml > ../test_result.xml
 rm temp.xml
 #ctest --output-junit ../test_result.xml --test-dir build
