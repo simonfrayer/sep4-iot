@@ -8,6 +8,7 @@ rm -rf build test_result.xml ../test_result.xml
 
 ./build/iot_base_test --gtest_output="xml:temp.xml"
 ./build/src/TestActivationHandler/TestActivationHandler --gtest_output="xml:temp.xml"
+./build/src/TestDataHandler/TestDataHandler --gtest_output="xml:temp.xml"
 ./build/src/TestSensorsHandler/TestSensorsHandler --gtest_output="xml:temp.xml"
 ./build/src/TestTemperatureHumidity/TestTemperatureHumidity --gtest_output="xml:temp.xml"
 sed 's/\/workspaces\/iot-base\///g' < temp.xml > ../test_result.xml
