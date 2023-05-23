@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
+#include <stdbool.h>
 #include "FreeRTOS_FFF_MocksDeclaration.h"
 #include "fff.h"
+
 
 // Include interfaces and define global variables
 // defined by the production code
@@ -43,20 +45,51 @@ protected:
 
 //Test create method
 
-TEST_F(Test_temperatureHumidity, Test_hih_create_is_called) {
+TEST_F(Test_temperatureHumidity, Test_hih_create_is_called_OK) {
 
-	temperatureHumidity_create();
+	hih8120_initialise_fake.return_val = HIH8120_OK;
+	bool isInitialized = temperatureHumidity_create();
 
 	ASSERT_EQ(1, hih8120_initialise_fake.call_count);
+	ASSERT_EQ(true, isInitialized);
+}
+
+TEST_F(Test_temperatureHumidity, Test_hih_create_is_called_OutOfHeap) {
+
+	hih8120_initialise_fake.return_val = HIH8120_OUT_OF_HEAP;
+	bool isInitialized = temperatureHumidity_create();
+
+	ASSERT_EQ(1, hih8120_initialise_fake.call_count);
+	ASSERT_EQ(false, isInitialized);
+}
+
+TEST_F(Test_temperatureHumidity, Test_hih_create_is_called_DriverNotInitialised) {
+
+	hih8120_initialise_fake.return_val = HIH8120_DRIVER_NOT_INITIALISED;
+	bool isInitialized = temperatureHumidity_create();
+
+	ASSERT_EQ(1, hih8120_initialise_fake.call_count);
+	ASSERT_EQ(false, isInitialized);
+}
+
+
+TEST_F(Test_temperatureHumidity, Test_hih_create_is_called_TwiBusy) {
+
+	hih8120_initialise_fake.return_val = HIH8120_TWI_BUSY;
+	bool isInitialized = temperatureHumidity_create();
+
+	ASSERT_EQ(1, hih8120_initialise_fake.call_count);
+	ASSERT_EQ(false, isInitialized);
 }
 
 //Test getTemperatureMedian
 
-// TEST_F(Test_temperatureHumidity, Test_hih_create_is_called) {
+TEST_F(Test_temperatureHumidity, Test_calculateMedian_is_called) {
 
-// 	temperatureHumidity_getTemperatureMedian();
-// 	ASSERT_EQ(1, );
-// }
+	temperatureHumidity_getTemperatureMedian();
+	
+	ASSERT_EQ(1, medianCalculator_calculateMedian_fake.call_count );
+}
 
 //Test init
 
