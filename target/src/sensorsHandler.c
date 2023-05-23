@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
@@ -18,11 +19,27 @@ static TickType_t xFrequency2;
 
 void sensorsHandler_createSensors()
 {
-	temperatureHumidity_create();
-	co2_create();
-	
-	temperatureHumidity_createTask();
 
+	int maxIntializeTriesLeft = 5;
+
+	bool resultTemperatureHumiditySensor; 
+	
+	do{
+		resultTemperatureHumiditySensor =  temperatureHumidity_create();
+		printf("Initialize Temperature_Humidity TriesLeft:%d >%s<\n", maxIntializeTriesLeft, resultTemperatureHumiditySensor ? "true" : "false");
+
+		if(resultTemperatureHumiditySensor != true)
+		{
+			vTaskDelay(pdMS_TO_TICKS(5000UL));
+		}
+		else
+		{
+			temperatureHumidity_createTask();
+		}
+	} while(--maxIntializeTriesLeft);
+
+
+	co2_create();
 	co2_createTask();
 }
 

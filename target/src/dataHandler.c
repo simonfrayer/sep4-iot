@@ -97,7 +97,7 @@ void dataHandler_setHumidity(int16_t sensorHumidity)
 {
 	if(dataMutex != NULL)
 	{
-		if (xSemaphoreTake(dataMutex, (TickType_t)10) ==pdTRUE)
+		if (xSemaphoreTake(dataMutex, (TickType_t)10) == pdTRUE)
 		{
 			measuredData.humidity = sensorHumidity;
 			xSemaphoreGive(dataMutex);
