@@ -35,6 +35,7 @@ void sensorsHandler_createSensors()
 		else
 		{
 			temperatureHumidity_createTask();
+			break;
 		}
 	} while(--maxIntializeTriesLeft);
 
