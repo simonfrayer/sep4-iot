@@ -47,7 +47,7 @@ void sensorsHandler_init()
 {
 	
 	xLastWakeTime = xTaskGetTickCount();
-	xFrequency = pdMS_TO_TICKS(15000); // 150000 ms = 2.5 mins
+	xFrequency = pdMS_TO_TICKS(150000); // 150000 ms = 2.5 mins
 	xFrequency2 = pdMS_TO_TICKS(300); // 300 ms
 }
 
