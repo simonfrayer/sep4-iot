@@ -131,7 +131,7 @@ TEST_F(Test_sensorsHandler, Test_xTaskDelayUntil_calledCorrectFromRun)
 	sensorsHandler_run();
 
 	EXPECT_EQ(1, xTaskDelayUntil_fake.call_count);
-	EXPECT_EQ(pdMS_TO_TICKS(15000), xTaskDelayUntil_fake.arg1_val);
+	EXPECT_EQ(pdMS_TO_TICKS(150000), xTaskDelayUntil_fake.arg1_val);
 }
 
 //Test createTask function is called
