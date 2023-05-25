@@ -54,19 +54,40 @@ protected:
 
 //Test createSensors method
 
-// TEST_F(Test_sensorsHandler, Test_temperatureHumidity_create_is_called) {
+TEST_F(Test_sensorsHandler, Test_createSensors_CreatesSensorSuccessfully)
+{
+    temperatureHumidity_create_fake.return_val = true;
 
-// 	sensorsHandler_createSensors();
+    sensorsHandler_createSensors();
 
-// 	ASSERT_EQ(1, temperatureHumidity_createTask_fake.call_count);
-// }
+    EXPECT_EQ(1, temperatureHumidity_create_fake.call_count);
+    EXPECT_EQ(1, temperatureHumidity_createTask_fake.call_count);
+}
 
-// TEST_F(Test_sensorsHandler, Test_temperatureHumidity_createTask_is_called) {
+TEST_F(Test_sensorsHandler, Test_createSensors_RetriesOnFailure)
+{
+    temperatureHumidity_create_fake.return_val = false;
 
-// 	sensorsHandler_createSensors();
+    sensorsHandler_createSensors();
 
-// 	ASSERT_EQ(1, temperatureHumidity_create_fake.call_count);
-// }
+    // Assert
+    EXPECT_EQ(5, temperatureHumidity_create_fake.call_count);
+    EXPECT_EQ(0, temperatureHumidity_createTask_fake.call_count);
+}
+
+TEST_F(Test_sensorsHandler, Test_createSensors_DelaysOnFailure)
+{
+    temperatureHumidity_create_fake.return_val = false;
+
+    sensorsHandler_createSensors();
+
+    EXPECT_EQ(5, vTaskDelay_fake.call_count);  
+    EXPECT_EQ(pdMS_TO_TICKS(5000UL), vTaskDelay_fake.arg0_history[0]);
+    EXPECT_EQ(pdMS_TO_TICKS(5000UL), vTaskDelay_fake.arg0_history[1]);
+    EXPECT_EQ(pdMS_TO_TICKS(5000UL), vTaskDelay_fake.arg0_history[2]);
+    EXPECT_EQ(pdMS_TO_TICKS(5000UL), vTaskDelay_fake.arg0_history[3]);
+	EXPECT_EQ(pdMS_TO_TICKS(5000UL), vTaskDelay_fake.arg0_history[4]);
+}
 
 //Test init method
 
@@ -105,13 +126,13 @@ TEST_F(Test_sensorsHandler, Test_vTaskDelay_calledCorrectFromRun)
 
 }
 
-// TEST_F(Test_sensorsHandler, Test_xTaskDelayUntil_calledCorrectFromRun)
-// {
-// 	sensorsHandler_run();
+TEST_F(Test_sensorsHandler, Test_xTaskDelayUntil_calledCorrectFromRun)
+{
+	sensorsHandler_run();
 
-// 	EXPECT_EQ(1, xTaskDelayUntil_fake.call_count);
-// 	EXPECT_EQ(pdMS_TO_TICKS(150000), xTaskDelayUntil_fake.arg1_val);
-// }
+	EXPECT_EQ(1, xTaskDelayUntil_fake.call_count);
+	EXPECT_EQ(pdMS_TO_TICKS(15000), xTaskDelayUntil_fake.arg1_val);
+}
 
 //Test createTask function is called
 
