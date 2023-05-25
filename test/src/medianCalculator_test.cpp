@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
+
 
 extern "C" {
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <stdint.h>
     #include "medianCalculator.h"
 }
 

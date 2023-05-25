@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdint.h>
 
 struct MeasuredData {
@@ -18,3 +19,4 @@ void dataHandler_setTemperature(int16_t sensorTemperature);
 void dataHandler_setHumidity(int16_t sensorHumidity);
 void dataHandler_setCO2(int16_t sensorCO2);
 void dataHandler_setLimits(int16_t minLimit, int16_t maxLimit);
+void dataHandler_createMutex();
