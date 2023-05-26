@@ -9,4 +9,5 @@ target_sources(
     medianCalculator.c
     activationHandler.c
     servo.c
+    display.c
 )
