@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <display_7seg.h>
 
-#include "display.h"
+#include "./include/display.h"
 
 void display_initialize(){
     display_7seg_initialise(NULL); 
