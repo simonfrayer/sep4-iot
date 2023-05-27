@@ -9,6 +9,8 @@ void display_initialize(){
 
     // Power up the display
     display_7seg_powerUp();
+
+    //display- initial value of 0.0
     display_display(0000);
 }
 
