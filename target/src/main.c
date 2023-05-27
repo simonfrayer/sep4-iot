@@ -26,6 +26,7 @@
 #include "./include/co2.h"
 #include "./include/activationHandler.h"
 #include "./include/dataHandler.h"
+#include "./include/display.h"
 
 MessageBufferHandle_t downLinkMessageBuffer;
 
@@ -57,6 +58,9 @@ void initialiseSystem()
 
 	//initialize servo
 	activationHandler_createServo(); 
+
+	//initialize display
+	display_initialize();
 	
 	// Let's create some tasks
 	create_tasks_and_semaphores();

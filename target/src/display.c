@@ -9,6 +9,7 @@ void display_initialize(){
 
     // Power up the display
     display_7seg_powerUp();
+    display_display(0000);
 }
 
 void display_display(float valueToDisplay){

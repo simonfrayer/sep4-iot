@@ -8,6 +8,7 @@
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
 #include "./include/dataHandler.h"
+#include "./include/display.h"
 
 
 static int16_t temperatureMedian;
@@ -58,6 +59,8 @@ void sensorsHandler_run()
 		printf("SensorHandler Task Started\n");
 		
 	temperatureMedian = temperatureHumidity_getTemperatureMedian();
+	//display the temperature
+	display_display((float)temperatureMedian/10);
 
 		//Without the delay we experienced some undesired behaviour in hterm when printing
 		vTaskDelay(xFrequency2);
