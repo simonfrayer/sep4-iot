@@ -12,6 +12,7 @@ extern "C"
 	#include "sensorsHandler.h"
 	#include "co2.h"
 	#include "medianCalculator.h"
+	#include "display.h"
 }
 
 //--- Create Mocks---
@@ -25,6 +26,7 @@ FAKE_VOID_FUNC(co2_createTask);
 FAKE_VOID_FUNC(dataHandler_setTemperature, int16_t);
 FAKE_VOID_FUNC(dataHandler_setHumidity, int16_t);
 FAKE_VOID_FUNC(dataHandler_setCO2, int16_t);
+FAKE_VOID_FUNC(display_display, float);
 
 // Create Test fixture and Reset all Mocks before each test
 class Test_sensorsHandler : public ::testing::Test
@@ -42,6 +44,7 @@ protected:
 		RESET_FAKE(dataHandler_setTemperature);
 		RESET_FAKE(dataHandler_setHumidity);
 		RESET_FAKE(dataHandler_setCO2);
+		RESET_FAKE(display_display)
 		RESET_FAKE(vTaskDelay);
 		RESET_FAKE(xTaskDelayUntil);
 		RESET_FAKE(xTaskGetTickCount);
