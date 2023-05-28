@@ -10,13 +10,18 @@
 #include "./include/dataHandler.h"
 #include "./include/activationHandler.h"
 
-extern EventGroupHandle_t limitsEventGroup;
+// Event Group
+EventGroupHandle_t limitsEventGroup = NULL;
 
 //bit for limitsEventGroup
 #define BIT_LIMITS_DIFFER (1 << 0)
 
 static TickType_t xLastWakeTime;
 static TickType_t xFrequency;
+
+void activationHandler_createEventGroup(){
+    limitsEventGroup = xEventGroupCreate();
+}
 
 void activationHandler_createServo()
 {

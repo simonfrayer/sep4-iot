@@ -12,7 +12,6 @@
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
-#include <event_groups.h>
 
 #include <stdio_driver.h>
 #include <serial.h>
@@ -30,9 +29,6 @@
 
 MessageBufferHandle_t downLinkMessageBuffer;
 
-// Event Groups 
-EventGroupHandle_t limitsEventGroup = NULL;
-
 // Prototype for LoRaWAN handler
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority);
 
@@ -43,7 +39,7 @@ void create_freertos_components(void)
 	dataHandler_createMutex();
 
 	//create eventGroup
-	limitsEventGroup = xEventGroupCreate();
+	activationHandler_createEventGroup();
 
 	sensorsHandler_createTask();
 
