@@ -59,6 +59,7 @@ void sensorsHandler_run()
 		printf("SensorHandler Task Started\n");
 		
 	temperatureMedian = temperatureHumidity_getTemperatureMedian();
+
 	//display the temperature
 	display_display((float)temperatureMedian/10);
 
