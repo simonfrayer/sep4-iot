@@ -162,7 +162,7 @@ void lora_handler_task( void *pvParameters )
 		
 		if((rc = lora_driver_sendUploadMessage(false, &_uplink_payload)) == LORA_MAC_TX_OK)
 		{
-			printf("*****Uplink sent*****: >%s<", lora_driver_mapReturnCodeToText(rc));
+			printf("*****Uplink sent*****: >%s<\n", lora_driver_mapReturnCodeToText(rc));
 		}
 		else if(rc == LORA_MAC_RX) //There is a message to be received
 		{	
