@@ -1,12 +1,19 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
+#include <event_groups.h>
+
 #include "./include/servo.h"
 #include "./include/dataHandler.h"
 #include "./include/activationHandler.h"
 
+extern EventGroupHandle_t limitsEventGroup;
+
+//bit for limitsEventGroup
+#define BIT_LIMITS_DIFFER (1 << 0)
 
 static TickType_t xLastWakeTime;
 static TickType_t xFrequency;
@@ -43,7 +50,14 @@ void activationHandler_init()
 void activationHandler_run(void)
 {
     //printf("activationHandler Task Started\n");
-	xTaskDelayUntil(&xLastWakeTime, xFrequency);
+	
+    // wait for bit to get set
+		xEventGroupWaitBits(
+			limitsEventGroup,	  /* The event group being tested. */
+			BIT_LIMITS_DIFFER, /* The bits to wait for. */
+			pdTRUE,			  /* Bits will be cleared before return*/
+			pdTRUE,			  /* Wait for bits to be set */
+			portMAX_DELAY);	  /* Maximum time to wait*/
 		
 	struct MeasuredData data = dataHandler_getData();
     struct Limits limits = dataHandler_getLimits();
