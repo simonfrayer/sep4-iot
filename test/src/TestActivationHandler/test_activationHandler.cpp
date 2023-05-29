@@ -9,6 +9,9 @@ extern "C"
 	#include "activationHandler.h"
     #include "servo.h"
     #include "dataHandler.h"
+
+	//event group
+	extern EventGroupHandle_t limitsEventGroup;
 }
 
 //--- Create Mocks---

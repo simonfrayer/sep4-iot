@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include <ATMEGA_FreeRTOS.h>
+#include <event_groups.h>
 
 #include <lora_driver.h>
 #include <status_leds.h>
@@ -19,6 +20,10 @@ void lora_handler_task( void *pvParameters );
 static lora_driver_payload_t _uplink_payload; //Define the uplink payload
 
 extern MessageBufferHandle_t downLinkMessageBuffer;
+extern EventGroupHandle_t limitsEventGroup;
+
+//bit for limitsEventGroup
+#define BIT_LIMITS_DIFFER (1 << 0)
  
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority, MessageBufferHandle_t downlinkMessageBuffer)
 {
@@ -157,7 +162,7 @@ void lora_handler_task( void *pvParameters )
 		
 		if((rc = lora_driver_sendUploadMessage(false, &_uplink_payload)) == LORA_MAC_TX_OK)
 		{
-			printf("*****Uplink sent*****: >%s<", lora_driver_mapReturnCodeToText(rc));
+			printf("*****Uplink sent*****: >%s<\n", lora_driver_mapReturnCodeToText(rc));
 		}
 		else if(rc == LORA_MAC_RX) //There is a message to be received
 		{	
@@ -168,6 +173,9 @@ void lora_handler_task( void *pvParameters )
 			uint16_t maxTemperatureLimit = (downlinkPayload.bytes[2] << 8) + downlinkPayload.bytes[3];
 			printf("Received downlink: %d + %d\n", minTemperatureLimit, maxTemperatureLimit);
 			dataHandler_setLimits(minTemperatureLimit, maxTemperatureLimit);
+
+			// set bit
+			xEventGroupSetBits(limitsEventGroup, BIT_LIMITS_DIFFER);
 		}
 	}
 }

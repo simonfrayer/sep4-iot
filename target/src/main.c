@@ -33,10 +33,13 @@ MessageBufferHandle_t downLinkMessageBuffer;
 void lora_handler_initialise(UBaseType_t lora_handler_task_priority);
 
 /*-----------------------------------------------------------*/
-void create_tasks_and_semaphores(void)
+void create_freertos_components(void)
 {
 	//create mutex
 	dataHandler_createMutex();
+
+	//create eventGroup
+	activationHandler_createEventGroup();
 
 	sensorsHandler_createTask();
 
@@ -59,7 +62,7 @@ void initialiseSystem()
 	activationHandler_createServo(); 
 	
 	// Let's create some tasks
-	create_tasks_and_semaphores();
+	create_freertos_components();
 
 	//Set an initial limit for the servo
 	dataHandler_setLimits(10,15);
