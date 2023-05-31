@@ -4,10 +4,12 @@
 #include <stdio.h>
 #include <ATMEGA_FreeRTOS.h>
 #include <task.h>
+#include <event_groups.h>
 #include "./include/sensorsHandler.h"
 #include "./include/temperatureHumidity.h"
 #include "./include/co2.h"
 #include "./include/dataHandler.h"
+
 
 
 static int16_t temperatureMedian;
@@ -16,6 +18,11 @@ static int16_t co2Median;
 static TickType_t xLastWakeTime;
 static TickType_t xFrequency;
 static TickType_t xFrequency2;
+
+extern EventGroupHandle_t limitsEventGroup;
+
+//bit for limitsEventGroup
+#define BIT_LIMITS_DIFFER (1 << 0)
 
 void sensorsHandler_createSensors()
 {
@@ -70,6 +77,10 @@ void sensorsHandler_run()
 	co2Median = co2_getCO2Median();
 
 	dataHandler_setTemperature(temperatureMedian);
+
+	// set bit to compare the limits with the new temperature
+	xEventGroupSetBits(limitsEventGroup, BIT_LIMITS_DIFFER);
+
 	dataHandler_setHumidity(humidityMedian);
 	dataHandler_setCO2(co2Median);
 }
