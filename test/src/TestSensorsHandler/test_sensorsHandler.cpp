@@ -12,6 +12,9 @@ extern "C"
 	#include "sensorsHandler.h"
 	#include "co2.h"
 	#include "medianCalculator.h"
+
+	//event group
+	EventGroupHandle_t limitsEventGroup;
 }
 
 //--- Create Mocks---
