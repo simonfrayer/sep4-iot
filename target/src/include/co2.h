@@ -10,5 +10,5 @@
 #include <stdint.h>
 
 void co2_create();
-int16_t co2_getCO2Median(); 
-void co2_task();
+int16_t co2_getCO2Median();
+void co2_createTask();
